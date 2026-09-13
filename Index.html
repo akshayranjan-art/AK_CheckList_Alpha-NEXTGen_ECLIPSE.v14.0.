@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        /* CSS */
+    </style>
+</head>
+
+    <style>
+        /* System Interface Typography & Base Setup */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* ERROR BLINK EFFECT */
+@keyframes hard-error-blink {
+    0% {
+        border-color: #7f1d1d;
+        background-color: #fecaca;
+        box-shadow: 0 0 10px #dc2626;
+    }
+    50% {
+        border-color: #ff0000;
+        background-color: #ffffff;
+        box-shadow: 0 0 20px #ff0000;
+    }
+    100% {
+        border-color: #7f1d1d;
+        background-color: #fecaca;
+        box-shadow: 0 0 10px #dc2626;
+    }
+}
+
+.error-blink {
+    animation: hard-error-blink 0.25s infinite;
+}
+
+
+/* PDF White Background Fix */
+body,
+.form-container,
+table,
+thead,
+tbody {
+    background: #ffffff !important;
+}
+        /* Top Interactive Toolbelt */
+        .action-control-bar {
+    padding: 12px 20px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    border-bottom: 2px solid #e5e7eb;
+}
+       .btn-rules {
+    margin-left: 390px;   /* value adjust kar sakta hai */
+
+    padding: 10px 20px;
+    font-weight: 600;
+    background-color: #0284c7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-download {
+    margin-left: 20px;   /* value adjust kar sakta hai */
+    padding: 10px 20px;
+    font-weight: 600;
+    background-color: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+  .btn-reset {
+    margin-left: -2px;
+
+    padding: 10px 20px;
+    font-weight: 600;
+    background-color: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-reset:hover {
+    background-color: #b91c1c;
+}
+        /* Form Document Layout Styles */
+        .form-container {
+            max-width: 1000px;
+            margin: 25px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid #000000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+.header-banner {
+    background-color: #f97316;
+    color: white;
+    text-align: center;
+    padding: 6px;
+    font-weight: normal;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+        .criteria-banner {
+            background-color: #fb923c;
+            color: white;
+            text-align: center;
+            padding: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        /* Metadata Information Blocks */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .meta-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .meta-field label {
+            font-weight: bold;
+            min-width: 120px;
+        }
+        .meta-field input[type="text"] {
+            flex-grow: 1;
+            padding: 6px;
+            border: 1px solid #9ca3af;
+            border-radius: 4px;
+        }
+
+       /* Matrix Checklist Table Design */
+.checklist-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    border: 2px solid #000000; /* Crisp and deep black outer boundary */
+}
+
+.checklist-table th, .checklist-table td {
+    border: 1px solid #000000; /* Pure solid black internal grid lines for high contrast */
+    padding: 10px;
+    text-align: left;
+    font-size: 13px;
+    vertical-align: middle;
+    color: #000000; /* High contrast body text */
+}
+
+.checklist-table th {
+    background-color: #e5e7eb; /* Balanced header background for a premium executive print look */
+    font-weight: bold;
+    color: #000000; /* Distinct bold black heading text */
+}
+
+.center-align {
+    text-align: center;
+}
+
+.input-subtext {
+    color: #374151; /* Darkened subtext ensuring readable print quality in PDF */
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+
+        /* Hidden Verification Windows */
+        .modal-box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border: 1px solid #9ca3af;
+            z-index: 101;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
+            max-width: 500px;
+            width: 90%;
+            border-radius: 8px;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 100;
+        }
+
+        /* Optimization rules during PDF output generation */
+        @media print {
+            .action-control-bar {
+                display: none !important;
+            }
+            body {
+                background-color: #ffffff;
+            }
+            .form-container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TOP INTERACTIVE TOOLBELT -->
+    <div class="action-control-bar">
+
+    <div style="width:220px;">
+        <button type="button" id="btnResetForm" class="btn-reset">
+            🔄 Reset
+        </button>
+    </div>
+
+    <div style="display:flex; gap:20px;">
+        <button type="button" id="btnShowRules" class="btn-rules">
+            🔍 View Form Rules
+        </button>
+
+        <button type="button" id="btnDownloadPDF" class="btn-download">
+            📥 Download Checklist PDF
+        </button>
+    </div>
+
+</div>
+
+       <!-- 2. MAIN CREDENTIALING CHECKLIST SHEET -->
+    <div class="form-container" style="max-width: 1000px; margin: 10px auto; background-color: #ffffff; padding: 15px 30px 20px 30px; border: 1px solid #d1d5db; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+        <form id="credentialingForm">
+            
+            <div class="header-banner">Credentialing Application Checklist (Optum PSV)</div>
+            
+            <!-- Adjusted margin-top to a micro 2px to shift the inputs down slightly -->
+            <div class="meta-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 2px; margin-bottom: 0px;">
+                <div class="meta-field" style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-weight: bold; min-width: 120px;">Provider Name:</label>
+                    <input type="text" name="provider_name" placeholder="Enter Full Name" style="flex-grow: 1; padding: 6px; border: 1px solid #9ca3af; border-radius: 4px;">
+                </div>
+                <div class="meta-field" style="display: flex; align-items: center; gap: 10px;">
+                    <label style="font-weight: bold; min-width: 120px;">Provider ID:</label>
+                    <input type="text" name="provider_id" placeholder="Enter ID Code" style="flex-grow: 1; padding: 6px; border: 1px solid #9ca3af; border-radius: 4px;">
+                </div>
+            </div>
+
+
+            <!-- Definitive Micro Alignment: Set padding-top to 7px for perfect balance -->
+            <div style="margin: 0; padding: 7px 0 4px 0; display: flex; gap: 60px; font-weight: bold; font-size: 15px; align-items: center; font-family: inherit; width: 100%;">
+                
+                <!-- Group A: First 2 Elements -->
+                <div style="display: flex; gap: 35px; align-items: center;">
+                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
+                        <span>Initial Cred</span>
+                        <input type="radio" name="cred_type" value="Initial" style="transform: scale(2.2); margin: 0; cursor: pointer;">
+                    </label>
+                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
+                        <span>Recred</span>
+                        <input type="radio" name="cred_type" value="Recred" checked style="transform: scale(2.2); margin: 0; cursor: pointer;">
+                    </label>
+                </div>
+
+                <!-- Group B: DC / TH / CAM -->
+                <div style="display: flex; gap: 35px; align-items: center; margin-left: 235px;">
+                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
+                        <span>DC</span>
+                        <input type="radio" name="provider_type" value="DC" style="transform: scale(2.2); margin: 0; cursor: pointer;">
+                    </label>
+
+                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
+                        <span>TH</span>
+                        <input type="radio" name="provider_type" value="TH" style="transform: scale(2.2); margin: 0; cursor: pointer;">
+                    </label>
+
+                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
+                        <span>CAM</span>
+                        <input type="radio" name="provider_type" value="CAM" style="transform: scale(2.2); margin: 0; cursor: pointer;">
+                    </label>
+                </div>
+                
+            </div>
+
+            <!-- Shrunk banner: internal padding reduced from 4px to 2px, font size shrunk to 14px -->
+            <div class="criteria-banner" style="padding: 2px; margin-top: 3px; text-align: center; background-color: #fb923c; color: white; font-weight: bold; font-size: 14px; border: 0.5px solid #fb923c;">Clean Application Criteria</div>
+            <table class="checklist-table" style="width: 100%; border-collapse: collapse; margin-top: 4px; table-layout: fixed;">
+                <thead>
+                    <tr style="background-color: #f8fafc; height: auto;">
+                        <th style="width: 3%; border: 0.5px solid #111111; padding: 2px 4px; text-align: center; font-size: 13px; font-weight: normal; color: #475569; line-height: 1.2;">S.No.</th>
+                        <th style="width: 87%; border: 0.5px solid #111111; padding: 2px 4px; text-align: left; font-size: 13px; font-weight: bold; color: #1e293b; line-height: 1.2;">List</th>
+                        <th style="width: 5%; border: 0.5px solid #111111; padding: 2px 4px; text-align: center; font-size: 12px; font-weight: 900; letter-spacing: 0.3px; color: #0f172a; line-height: 1.2;">TRUE</th>
+                        <th style="width: 5%; border: 0.5px solid #111111; padding: 2px 4px; text-align: center; font-size: 12px; font-weight: 900; letter-spacing: 0.3px; color: #0f172a; line-height: 1.2;">FALSE</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+ <!-- Item Row 1 -->
+                               <!-- Item Row 1 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">1</td>
+                        
+                        <!-- Main Text Cell with Integrated Elements (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-transform: none; text-align: left; vertical-align: middle; line-height: 1.3; color: #111111;">
+                            No history of termination from Optum other than for failure to recred/moved without notifying?
+                            
+                            <!-- Previously Reviewed Selector Control Grid Alignment -->
+                            <div style="margin-top: 4px; text-align: center; font-weight: bold; font-size: 11px; color: #111111; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <span>Previously Reviewed</span>
+                                <input type="checkbox" name="previous_reviewed_1" style="transform: scale(1.1); margin: 0; cursor: pointer;">
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Checked) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_1" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_1').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_1" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_1').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+ <!-- Item Row 2 -->
+                    <!-- Combined Item Row 2 (Clean Box Layout without Inner Borders) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">2</td>
+                        
+                        <!-- Combined Verification Text and Date Inputs Block (Proportional 77% Width Layout without Inner Divider) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.8;">
+                            <!-- Top Question Area -->
+                            <div>
+                                Provider has a current, valid license in state of practice for specialty? 
+                                <span style="margin-left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <input type="date" name="verified_date_row_2_a" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
+                                </span>
+                            </div>
+                            
+                            <!-- Bottom Question Area -->
+                            <div style="margin-top: 8px;">
+                                No State Board (licensure) actions against the provider? 
+                                <span style="margin-left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <input type="date" name="verified_date_row_2_b" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
+                                </span>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Fields (Proportional 10% Width Layout Stacked without Divider Line) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
+                            <!-- Top Selection Area (criteria_row_2) -->
+                            <div style="height: 32px; display: flex; align-items: center; justify-content: center;">
+                                <input type="radio" name="criteria_row_2" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_2').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                            </div>
+                            <!-- Bottom Selection Area (criteria_row_3) -->
+                            <div style="height: 32px; margin-top: 8px; display: flex; align-items: center; justify-content: center;">
+                                <input type="radio" name="criteria_row_3" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_3').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                            </div>
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Fields (Proportional 10% Width Layout Stacked without Divider Line) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
+                            <!-- Top Selection Area (criteria_row_2) -->
+                            <div style="height: 32px; display: flex; align-items: center; justify-content: center;">
+                                <input type="radio" name="criteria_row_2" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_2').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                            </div>
+                            <!-- Bottom Selection Area (criteria_row_3) -->
+                            <div style="height: 32px; margin-top: 8px; display: flex; align-items: center; justify-content: center;">
+                                <input type="radio" name="criteria_row_3" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_3').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+<!-- Item Row 3 (Previously Row 4) -->
+                          <!-- Item Row 3 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">3</td>
+                        
+                        <!-- Main Text Cell with Dropdown, Date, and Independent NA Checkbox (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>
+                                Work History: Consecutive 5 years of work history present or history since licensure is present with <strong>No</strong> gaps greater than 1 year and explanation of gaps greater than 6 months? 
+                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <input type="date" name="verified_date_row_4" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
+                                </span>
+                            </div>
+                            
+                            <!-- Bottom Control Line inside the Text Box -->
+                            <div style="margin-top: 6px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+                                <!-- Source Dropdown Select Element -->
+                                <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                    <span style="font-weight: bold;">Source:</span>
+                                    <select name="source_row_4" style="padding: 2px 6px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
+                                        <option value="Application">Application</option>
+                                        <option value="CV / Resume">Provider Correspondence</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- NA Checkbox: Fully independent without clearing the radio choices -->
+                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer;">
+                                    <span>NA this is recred</span>
+                                    <input type="checkbox" name="na_row_4" style="transform: scale(1.3); margin: 0; cursor: pointer;">
+                                </label>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_4" value="TRUE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="alert('FL state only can have true'); if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_4').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_4" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_4').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+
+<!-- Item Row 4 (Previously Row 5) -->
+                          <!-- Item Row 4 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">4</td>
+                        
+                        <!-- Main Text Cell with Date Picker and Previously Reviewed Checkbox (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>
+                                Disclosure questions are answered <strong>"NO"</strong>? 
+                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <input type="date" name="verified_date_row_5" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
+                                </span>
+                            </div>
+                            
+                            <!-- Bottom Control Line inside the Text Box -->
+                            <div style="margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; font-size: 12px;">
+                                <!-- Previously Reviewed Checkbox aligned right -->
+                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer;">
+                                    <span>Previously Reviewed</span>
+                                    <input type="checkbox" name="previous_reviewed_5" style="transform: scale(1.3); margin: 0; cursor: pointer;">
+                                </label>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Pre-Checked) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_5" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_5').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_5" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_5').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 5 (No OIG Sanctions - Shrunk Height & Dark Black Borders) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">5</td>
+                        
+                        <!-- Main Text Cell with Date Picker and Source Hyperlink (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>
+                                No OIG (Medicare/Medicaid) sanctions against provider? 
+                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <!-- Left intentionally blank without auto-date class so it remains empty initially -->
+                                    <input type="date" name="verified_date_row_6" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                                <span style="margin-left: 15px; font-size: 12px;">Source:</span>
+                            </div>
+                            <!-- Static Source URL Hyperlink Area -->
+                            <div style="margin-top: 2px;">
+                                <a href="https://exclusions.oig.hhs.gov/" target="_blank" style="color: #111111; text-decoration: underline; font-size: 12px;">https://exclusions.oig.hhs.gov/</a>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Checked) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_6" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_6').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_6" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_6').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 6 (No GSA Sanctions - Shrunk Height & Dark Black Borders) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">6</td>
+                        
+                        <!-- Main Text Cell with Date Picker and Source Hyperlink (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>
+                                No GSA (Medicare/Medicaid) sanctions against provider? 
+                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <!-- Left intentionally blank without auto-date class so it remains empty initially -->
+                                    <input type="date" name="verified_date_row_7" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                                <span style="margin-left: 15px; font-size: 12px;">Source:</span>
+                            </div>
+                            <!-- Static Source URL Hyperlink Area -->
+                            <div style="margin-top: 2px;">
+                                <a href="https://www.sam.gov/portal/SAM/#1#1" target="_blank" style="color: #111111; text-decoration: underline; font-size: 12px;">https://www.sam.gov/portal/SAM/#1#1</a>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Checked) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_7" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_7').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_7" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_7').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+ <!-- Item Row 7 (No State Medicaid Exclusions - Moved to S.No 7) -->
+                    <tr>
+                        <!-- Small S.No. Cell -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">7</td>
+                        
+                        <!-- Main Text Cell with Dropdown and Date Picker -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+                                <span>No State Medicaid Exclusions?</span>
+                                
+                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <!-- Manually selected date slot: Left blank by default without auto-class -->
+                                    <input type="date" name="verified_date_row_8" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                                
+                                <!-- Default Pre-Checked N/A Checkbox -->
+                                <label style="display: inline-flex; align-items: center; gap: 4px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                                    <span>N/A</span>
+                                    <input type="checkbox" name="na_row_8" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
+                                           onclick="if(this.checked) { document.getElementById('source_dropdown_row_8').value = ''; }">
+                                </label>
+                                
+                                <span style="font-size: 12px;">Source:</span>
+                            </div>
+                            
+                            <!-- State URL Source Dropdown Menu Area -->
+                            <div style="margin-top: 4px; width: 100%;">
+                                <select id="source_dropdown_row_8" name="source_row_8" style="width: 100%; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;"
+                                        onchange="if(this.value !== '') { document.getElementsByName('na_row_8')[0].checked = false; }">
+                                    <option value="">Select</option>
+                                    <option value="DC">DC - https://ocp.dc.gov/page/excluded-parties-list</option>
+                                    <option value="FL">FL - http://apps.ahca.myflorida.com/dm_web/(S(o2lem43e3awo44e1bbcinaq5))/default.aspx</option>
+                                    <option value="HI">HI - https://medquest.hawaii.gov/en/plans-providers/provider-exclusion-reinstatement-list.html</option>
+                                    <option value="IA">IA - https://dhs.iowa.gov/ime/about/aboutime/program-integrity</option>
+                                    <option value="ID">ID - https://healthandwelfare.idaho.gov/providers/idaho-medicaid-providers/information-medicaid-providers</option>
+                                    <option value="IN">IN - https://www.in.gov/fssa/ompp/4973.htm</option>
+                                    <option value="KS">KS - http://www.kdheks.gov/hcf/medicaid_program_integrity</option>
+                                    <option value="KY">KY - https://chfs.ky.gov/agencies/dms/dpi/pe/Pages/terminated.aspx</option>
+                                    <option value="LA">LA - https://adverseactions.dhh.la.gov/</option>
+                                    <option value="MA">MA - http://www.mass.gov/eohhs/gov/newsroom/masshealth/providers/list-of-suspended-or-excluded-masshealth-providers.html</option>
+                                    <option value="MD">MD - https://mmcp.dhmh.maryland.gov/Pages/About-Our-Programs.aspx</option>
+                                    <option value="MI">MI - http://www.michigan.gov/mdhhs/0,5885,7-339-71551_2945_42542_42543_42546_42551-16459--,00.html</option>
+                                    <option value="MN">MN - https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_</option>
+                                    <option value="MO">MO - https://mmac.mo.gov/providers/provider-sanctions/</option>
+                                    <option value="MS">MS - https://medicaid.ms.gov/providers/provider-terminations/</option>
+                                    <option value="NE">NE - http://dhhs.ne.gov/medicaid/Pages/med_pi_sanc.aspx</option>
+                                    <option value="NJ">NJ - http://www.state.nj.us/treasury/revenue/debarment/index.shtml</option>
+                                    <option value="NV">NV - http://dhcfp.nv.gov/Providers/PI/PSExclusions/</option>
+                                    <option value="NY">NY - https://omig.ny.gov/fraud/medicaid-exclusions</option>
+                                    <option value="NC">NC - https://medicaid.ncdhhs.gov/excluded-providers</option>
+                                    <option value="OH">OH - http://medicaid.ohio.gov/PROVIDERS/EnrollmentandSupport/ProviderExclusionandSuspensionList.aspx</option>
+                                    <option value="PA">PA - http://www.dhs.pa.gov/publications/medichecksearch/index.htm</option>
+                                    <option value="TN">TN - http://www.tn.gov/tenncare/topic/terminated-provider-list</option>
+                                    <option value="TX">TX - https://oig.hhsc.texas.gov/exclusions</option>
+                                    <option value="WA">WA - http://www.hca.wa.gov/billers-providers/apple-health-medicaid-providers/provider-termination-and-exclusion-list</option>
+                                </select>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Default Pre-Checked) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_8" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_8').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_8" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_8').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 8 (Required Education - Fixed Proportions & Today's Date Auto-Injection) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">8</td>
+                        
+                        <!-- Main Text Cell with Dropdown, Auto Today Date Picker, and NA Checkbox (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+                                <span>Provider has the required education for their specialty?</span>
+                                
+                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <span>Verified on:</span>
+                                    <!-- Re-added class to automatically fetch today's date on page load -->
+                                    <input type="date" name="verified_date_row_9" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                                
+                                <span style="font-size: 12px;">Source:</span>
+                            </div>
+                            
+                            <!-- Dropdown Select Layout Area & NA this is recred Checkbox Row -->
+                            <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
+                                <select id="source_dropdown_row_9" name="source_row_9" style="width: 250px; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
+                                    <option value="License Board">License Board</option>
+                                </select>
+                                
+                                <!-- NA Checkbox that acts completely independent -->
+                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                                    <span>NA this is recred</span>
+                                    <input type="checkbox" name="na_row_9" style="transform: scale(1.3); margin: 0; cursor: pointer;">
+                                </label>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_9" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_9').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_9" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_9').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 9 (Professional Liability Insurance - Fixed Layout matching latest image layout) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">9</td>
+                        
+                        <!-- Main Text Cell with Dropdown, Auto Today Date Picker (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>
+                                Provider has current Professional Liability Insurance that meets Optum minimum requirements? $100,000/$300,000 (minimum for DC and CAM) $1,000,000/$3,000,000 (minimum for Therapy) and meets state fund limits (if applicable) 
+                                <span style="margin-left: 4px; font-size: 12px;">Source:</span>
+                            </div>
+                            
+                            <!-- Dropdown Select Layout Area & Verified Date Input Row -->
+                            <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
+                                <select id="source_dropdown_row_10" name="source_row_10" style="width: 250px; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
+                                    <option value="Insurance Face Sheet">Insurance Face Sheet</option>
+                                    <option value="CAQH Application">CAQH Application</option>
+                                </select>
+                                
+                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; margin-right: 50px;">
+                                    <span>Verified on:</span>
+                                    <!-- Re-added class to automatically fetch today's date on page load -->
+                                    <input type="date" name="verified_date_row_10" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_10" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_10').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_10" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_10').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 10 (No Liability Claims - S.No 10 Layout with Date on Second Line) -->
+                    <tr>
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">10</td>
+                        
+                        <!-- Main Text Cell with Static Source and Auto Today Date Input on Second Line (Proportional 77% Width Layout) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>No liability claims within the past 5 years for initial/3 years for recred or as identified by NPDB? <strong>Source: NPDB</strong></div>
+                            
+                            <!-- Date picker moved cleanly to the second line with auto-current-date class helper -->
+                            <div style="margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                <span>Verified on:</span>
+                                <input type="date" name="verified_date_row_11" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_11" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_11').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_11" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_11').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 11 (Approval Timeline Matrix - Perfectly Balanced .1 Expanded Height) -->
+                    <tr style="height: auto;">
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">11</td>
+                        
+                        <!-- Main Text Cell with Clean Content Only (Proportional 77% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 8px 12px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div>License & PLI current and all dates within 120 days for approval within 3 days?</div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_12" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_12').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_12" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_12').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+<!-- Item Row 12 (Attestation Timeline Metric - Perfectly Balanced .1 Expanded Height) -->
+                    <tr style="height: auto;">
+                        <!-- Small S.No. Cell (Proportional 3% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 3%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">12</td>
+                        
+                        <!-- Main Text Cell with Auto Today Date Input Box (Proportional 77% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 77%; border: 1px solid #111111; padding: 8px 12px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%;">
+                                <span>Application Attestation date within the past 120 days. Actual attestation date:</span>
+                                
+                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <!-- Automatically sets today's date on load -->
+                                    <input type="date" name="verified_date_row_13" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                            </div>
+                        </td>
+                        
+                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_13" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_13').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                        
+                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
+                        <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
+                            <input type="radio" name="criteria_row_13" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_13').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                        </td>
+                    </tr>
+
+
+<!-- Item Row 13 (NPI / DeathMaster Verification Row) -->
+                    <tr>
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">13</td>
+                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
+                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+                                <strong>NPI</strong>
+                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                                    <input type="date" name="verified_date_row_14" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                </span>
+                                <span style="font-size: 12px; font-weight: bold; margin-left: 10px;">Source: <span style="text-decoration: underline;">NPPES</span></span>
+                                
+                                <!-- Source Dropdown Option -->
+                                <select id="source_dropdown_row_14" name="source_row_14" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer; margin-left: 15px;">
+                                    <option value="Select">Select</option>
+                                    <option value="NPPES Portal">MD Medicaid</option>
+                                    <option value="NPPES Portal">NJ Medicaid</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 6px; font-size: 13px;">
+                                <strong>DeathMaster</strong> <span style="text-decoration: underline; margin-left: 5px; font-weight: bold;">Yes</span>
+                            </div>
+                        </td>
+                        <!-- Empty Muted Gray Selector Fields as per Screenshot -->
+                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+                    </tr>
+
+<!-- Item Row 14 (Performance Indicators Row with Dropdowns Defaulted to No) -->
+<tr>
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">14</td>
+    <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: inline-flex; align-items: center; gap: 8px;">
+                <strong>Performance Indicators: Verified Date</strong>
+                <!-- Date input field with light gray background -->
+                <input type="date" name="verified_date_row_15" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f1f5f9; font-size: 11px;">
+            </div>
+            <!-- Pre-Checked N/A Checkbox -->
+            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                <span>N/A this is initial cred</span>
+                <input type="checkbox" name="na_initial_row_15" checked style="transform: scale(1.3); margin: 0; cursor: pointer;">
+            </label>
+        </div>
+        
+        <!-- Grid layout for the 4 sub-dropdown elements -->
+        <div style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; font-size: 12px; font-weight: bold;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span>Complaints</span>
+                <!-- Dropdown with light gray background -->
+                <select name="perf_complaints" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span>Access Issues</span>
+                <!-- Dropdown with light gray background -->
+                <select name="perf_access" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span>Under/Over Utilization Data</span>
+                <!-- Dropdown with light gray background -->
+                <select name="perf_utilization" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <span>Quality of Care</span>
+                <!-- Dropdown with light gray background -->
+                <select name="perf_quality" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
+                    <option value="No" selected>No</option>
+                    <option value="Yes">Yes</option>
+                </select>
+            </div>
+        </div>
+    </td>
+    <!-- Empty Muted Gray Selector Fields -->
+    <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+    <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+</tr>
+
+
+<!-- Item Row 15 (Last Completed Credentialing Date - Strictly 3-Year Rolling Past Dynamic Restriction Only) -->
+                    <tr>
+                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">15</td>
+                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                    <strong>Last Completed Credentialing Date:</strong>
+                                    <!-- No auto-date helper class. Set to only allow 3 years lookback up to yesterday -->
+                                    <input type="date" id="last_credentialing_date" name="last_credentialing_date" style="padding: 2px 6px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 12px;">
+                                </div>
+                                <!-- Pre-Checked N/A Checkbox -->
+                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                                    <span>N/A this is initial cred</span>
+                                    <input type="checkbox" name="na_initial_row_16" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
+                                           onclick="if(this.checked) { document.getElementById('last_credentialing_date').value = ''; }">
+                                </label>
+                            </div>
+                        </td>
+                        <!-- Empty Muted Gray Selector Fields -->
+                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+            <!-- ========================================================
+                 STEP 1: FINAL DECISION & COMPACT FLAT LAYOUT (.2% GAP MATCH)
+                 ======================================================== -->
+<div style="margin-top: 8px; font-family: inherit; color: #111111; width: 100%;">
+    
+    <!-- 1. Decision Radio Buttons with ultra-tight 2px (.2%) gap -->
+    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: bold; line-height: 1.2;">
+        <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; padding: 0;">
+            <input type="radio" name="final_clean_status" value="meets" checked style="transform: scale(1.4); margin: 0; cursor: pointer;"
+                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+            <span>Application <span style="text-decoration: underline;">meets all clean criteria</span> and is ready for approval (all questions above answered TRUE).</span>
+        </label>
+        <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; padding: 0;">
+            <input type="radio" name="final_clean_status" value="not_meets" style="transform: scale(1.4); margin: 0; cursor: pointer;"
+                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+            <span>Application does <span style="text-decoration: underline;">not</span> meet clean criteria and is sent for Clinical Review</span>
+        </label>
+    </div>
+
+    <!-- 2. Shrunk Input & 3. Left-Aligned Date Completed with Tight .1 Gap -->
+    <div style="margin-top: 5px; display: flex; align-items: center; justify-content: flex-start; font-size: 13px; font-weight: bold; width: 100%; white-space: nowrap;">
+        
+        <!-- Coordinator Section with Darker Grey Background Box (No Placeholder) -->
+        <div style="display: inline-flex; align-items: center;">
+            <span>Credentialing Coordinator:</span>
+           <input type="text" name="coordinator_name" placeholder=""
+            style="width: 280px;
+            padding: 2px 6px;
+            border: 1px solid transparent;
+            outline: none;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: bold;
+            color: #111111;
+            height: 20px;
+            background-color: rgba(226, 232, 240, 0.9);
+            margin-left: 6px;
+            border-radius: 2px;">
+        </div>
+        
+        <!-- Date Completed Block with Darker Grey Background Box -->
+        <div style="display: inline-flex; align-items: center; margin-left: 30px;">
+            <span>Date Completed:</span>
+            <input type="date" name="date_completed" class="auto-current-date" style="width: 115px; padding: 1px 2px; border: none; outline: none; font-family: inherit; font-size: 12px; font-weight: bold; color: #111111; height: 20px; background-color: rgba(226, 232, 240, 0.9); margin-left: 6px; border-radius: 2px;">
+        </div>
+        
+    </div>
+</div>
+
+
+<!-- ========================================================
+                     STEP 2: DOUBLE ORANGE WITH 0.2% FINE BORDER MATCH
+                     ======================================================== -->
+<div style="margin-top: 6px; border: 1px solid #111111; box-sizing: border-box; width: 100%;">
+    
+    <!-- 1. First Thin Orange Heading Line -->
+    <div style="background-color: #fb923c; color: white; padding: 2px 10px; font-weight: bold; font-size: 11px; border-bottom: 1px solid #111111;">
+        Clinical Reviewer Section for Unclean Applications:
+    </div>
+    
+    <!-- 2. Super Thin Empty White Space Block -->
+    <div style="height: 12px; background-color: #ffffff; border-bottom: 1px solid #111111;"></div>
+    
+    <!-- 3. Bottom Section: Main Orange Box with ultra-thin padding -->
+    <div style="background-color: #fb923c; padding: 3px 2px 3px 2px; box-sizing: border-box; width: 100%;">
+        
+        <!-- Heading Text inside the orange block -->
+        <div style="color: #111111; font-weight: bold; font-size: 11px; margin-bottom: 2px; padding-left: 5px;">
+            Issue for Review:
+        </div>
+        
+        <!-- White Input Field with ultra-thin 2px side and bottom padding -->
+        <div style="width: 100%; box-sizing: border-box; padding: 0;">
+            <input type="text" name="issue_for_review" style="width: 100%; padding: 3px 6px; border: 1px solid #475569; font-family: inherit; font-size: 11px; box-sizing: border-box; height: 26px; background-color: #ffffff; outline: none; border-radius: 1px; display: block;">
+        </div>
+        
+    </div>
+
+</div>
+
+                <!-- ========================================================
+                     STEP 3: INTERACTIVE EXCEPTIONS SELECTORS WITH EXACT GAP MATCH
+                     ======================================================== -->
+                <div style="margin-top: 14px; font-size: 13px; font-weight: bold; color: #111111;">
+                    <div>Application Meets Clean Application Exceptions:</div>
+                    
+                    <!-- Radio group container (Default blank/unchecked with optimized gap) -->
+                    <div style="margin-top: 6px; display: flex; flex-direction: column; gap: 5px;">
+                        
+                        <!-- Option 1: Yes (Enlarged Radio Button & Double-Click Blank Logic) -->
+                        <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="clean_exceptions" value="Yes" style="transform: scale(1.5); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('clean_exceptions').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                            <span>Yes. Approved for Participation. Present to Committee with Clean Applications</span>
+                        </label>
+                        
+                        <!-- Option 2: No (Enlarged Radio Button & Double-Click Blank Logic) -->
+                        <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="radio" name="clean_exceptions" value="No" style="transform: scale(1.5); margin: 0; cursor: pointer;"
+                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('clean_exceptions').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+                            <span>No. Present to Committee for File Review.</span>
+                        </label>
+                        
+                    </div>
+                </div>
+
+                <!-- ========================================================
+                     STEP 4: RECOMMENDATION FOR COMMITTEE ROW (FULLY NON-EDITABLE)
+                     ======================================================== -->
+                <div style="margin-top: 14px; display: flex; align-items: center; gap: 15px; font-size: 13px; font-weight: bold; color: #111111; user-select: none;">
+                    <span>Recommendation for Committee:</span>
+                    
+                    <!-- Flat Visual Circle Option 1 (Approve) -->
+                    <div style="display: inline-flex; align-items: center; gap: 6px; cursor: default;">
+                        <span style="display: inline-block; width: 12px; height: 14px; border: 1px solid #111111; border-radius: 50%; background-color: #ffffff; box-sizing: border-box;"></span>
+                        <span>Approve</span>
+                    </div>
+                    
+                    <!-- Flat Visual Circle Option 2 (Deny) -->
+                    <div style="display: inline-flex; align-items: center; gap: 6px; cursor: default;">
+                        <span style="display: inline-block; width: 12px; height: 14px; border: 1px solid #111111; border-radius: 50%; background-color: #ffffff; box-sizing: border-box;"></span>
+                        <span>Deny</span>
+                    </div>
+                    
+                    <!-- Flat Visual Circle Option 3 (Pending Review) -->
+                    <div style="display: inline-flex; align-items: center; gap: 6px; cursor: default;">
+                        <span style="display: inline-block; width: 12px; height: 14px; border: 1px solid #111111; border-radius: 50%; background-color: #ffffff; box-sizing: border-box;"></span>
+                        <span>Pending Review</span>
+                    </div>
+                </div>
+
+
+                                 <!-- ========================================================
+                     STEP 5: NON-EDITABLE BLANK CLINICAL REVIEWER SECTION (EXACT SNAPSHOT MATCH)
+                     ======================================================== -->
+                <div style="margin-top: 12px; display: flex; align-items: center; justify-content: flex-start; font-size: 13px; font-weight: bold; color: #111111; width: 100%; white-space: nowrap;">
+                    
+                    <!-- Clinical Reviewer Completely Blank & Readonly (Non-editable) -->
+                    <div style="display: inline-flex; align-items: center;">
+                        <span>Clinical Reviewer:</span>
+                        <input type="text" name="reviewer_signature" readonly style="width: 280px; padding: 2px 6px; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-size: 13px; font-weight: bold; color: #111111; height: 20px; background-color: #ffffff; margin-left: 6px; border-radius: 1px; cursor: default;">
+                    </div>
+                    
+                    <!-- Date Reviewed Completely Blank, No mm/dd/yyyy Hint & Readonly (Non-editable) -->
+                    <div style="display: inline-flex; align-items: center; margin-left: 30px;">
+                        <span>Date Reviewed:</span>
+                        <input type="text" name="date_reviewed" readonly style="width: 115px; padding: 2px 4px; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-size: 12px; font-weight: bold; color: #111111; height: 20px; background-color: #ffffff; margin-left: 6px; border-radius: 1px; cursor: default;">
+                    </div>
+                    
+                </div>
+
+                <!-- ========================================================
+                     STEP 6: LEFT-ALIGNED ADMINISTRATIVE LABELS ROW
+                     ======================================================== -->
+                <div style="margin-top: 6px; display: flex; gap: 40px; font-size: 11px; color: #4b5563; font-weight: normal; justify-content: flex-start; width: 100%;">
+                    <span>Owner: Sara Seaberry</span>
+                    <span>Last Updated: 3/11/25</span>
+                </div>
+
+            </div>
+
+
+
+    <!-- Hidden Rules Dialog Modal Box Layout -->
+    <div id="rulesModal" class="modal-box">
+        <h3 style="margin-top: 0; color: #0284c7; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">📋 Credentialing Processing Parameters</h3>
+        <ul style="padding-left: 20px; line-height: 1.8; color: #374151; font-size: 14px;">
+            <li>Every criteria row check box matrix selection layout tier (1 through 13) requires a value.</li>
+            <li><strong>Timeline Limits:</strong> Last Completed Credentialing Date parameters look back no more than 3 years. Valid ranges are strictly capped between <strong>2023 and 2026</strong>.</li>
+            <li>Blank fields display an interactive notification window overlay check warning sequence.</li>
+        </ul>
+        <div style="text-align: right; margin-top: 20px;">
+            <button id="btnCloseRules" style="padding: 8px 16px; background-color: #4b5563; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Dismiss Panel</button>
+        </div>
+    </div>
+    <div id="modalOverlay" class="modal-overlay"></div>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Bind system interactive elements to action workflows
+    document.getElementById("btnShowRules").addEventListener("click", openRulesBox);
+    document.getElementById("btnCloseRules").addEventListener("click", closeRulesBox);
+    document.getElementById("modalOverlay").addEventListener("click", closeRulesBox);
+    document.getElementById("btnDownloadPDF").addEventListener("click", processPipelineExecution);
+    document.getElementById("btnResetForm").addEventListener("click", resetEntireForm);
+
+    // ========================================================
+    // AUTOMATIC TODAY'S DATE INJECTION LOGIC
+    // ========================================================
+    // Automatically sets today's date (YYYY-MM-DD) into all fields with class 'auto-current-date'
+    const today = new Date().toISOString().split('T')[0]; 
+    document.querySelectorAll('.auto-current-date').forEach(dateInput => {
+        if (dateInput && !dateInput.value) {
+            dateInput.value = today;
+        }
+    });
+    
+    // ========================================================
+    // ROLLING CALENDAR BOUNDARY RESTRICTION LOGIC (ROW 15)
+    // ========================================================
+    // Restricts the date picker to dates within a strict rolling 3-year past lookback window
+    const datePickerInput = document.getElementById('last_credentialing_date');
+    if (datePickerInput) {
+        const standardToday = new Date();
+        
+        // Calculate the maximum limit (Yesterday)
+        const maxBoundaryDate = new Date(standardToday);
+        maxBoundaryDate.setDate(standardToday.getDate() - 1);
+        const maxString = maxBoundaryDate.toISOString().split('T')[0];
+        
+        // Calculate the minimum limit (Exactly 3 years ago today)
+        const minBoundaryDate = new Date(standardToday);
+        minBoundaryDate.setFullYear(standardToday.getFullYear() - 3);
+        const minString = minBoundaryDate.toISOString().split('T')[0];
+        
+        // Apply boundaries directly to element properties to lock the calendar UI
+        datePickerInput.min = minString;
+        datePickerInput.max = maxString;
+    }
+});
+
+
+function openRulesBox() {
+    document.getElementById("rulesModal").style.display = "block";
+    document.getElementById("modalOverlay").style.display = "block";
+}
+
+function closeRulesBox() {
+    document.getElementById("rulesModal").style.display = "none";
+    document.getElementById("modalOverlay").style.display = "none";
+}
+
+
+function resetEntireForm() {
+    // 1. Reset standard native form states (including checkboxes, options to No, and source picks)
+    document.getElementById("credentialingForm").reset();
+
+    // 2. Hide modals and overlay layouts
+    document.getElementById("rulesModal").style.display = "none";
+    document.getElementById("modalOverlay").style.display = "none";
+
+    // 3. Re-inject today's date into active fields running the auto helper class (Now includes Date Completed)
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('.auto-current-date').forEach(dateInput => {
+        dateInput.value = today;
+    });
+
+    // 4. Clean manual blank date entry fields completely back to empty selection inputs (Removed date_completed from here)
+    const manualBlankFields = [
+        "verified_date_row_6", 
+        "last_credentialing_date", 
+        "date_reviewed"
+    ];
+    
+    manualBlankFields.forEach(fieldName => {
+        const targetInput = document.querySelector(`input[name="${fieldName}"]`);
+        if (targetInput) {
+            targetInput.value = '';
+        }
+    });
+
+    // 5. Restore default radio tracking memory flags for the double-click blank triggers
+    const defaultMeetsRadio = document.querySelector('input[name="final_clean_status"][value="meets"]');
+    if (defaultMeetsRadio) {
+        document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false);
+        defaultMeetsRadio.wasChecked = true;
+    }
+}
+
+function runSystemDataSanitization() {
+    let unmappedFieldsList = [];
+
+    // Reset row backgrounds to clear previous validation highlights
+    document.querySelectorAll('.checklist-table tbody tr').forEach(tr => tr.style.backgroundColor = '');
+
+        // 1. Validate Base Form Metadata Input Blocks
+const checklistProfileFields = {
+    "Provider Name": document.querySelector('input[name="provider_name"]'),
+    "Provider ID": document.querySelector('input[name="provider_id"]'),
+    "Credentialing Coordinator Name": document.querySelector('input[name="coordinator_name"]')
+};
+
+for (let descriptionTag in checklistProfileFields) {
+
+    const field = checklistProfileFields[descriptionTag];
+
+    if (!field) continue;
+
+    if (!field.value.trim()) {
+
+        unmappedFieldsList.push(descriptionTag);
+
+        // HARD RED ERROR STYLE
+        field.style.border = "4px solid #7f1d1d";
+        field.style.backgroundColor = "#fecaca";
+        field.style.boxShadow = "0 0 15px #dc2626";
+
+        field.classList.add("error-blink");
+
+        setTimeout(() => {
+            field.classList.remove("error-blink");
+        }, 140000);
+
+    } else {
+
+        field.classList.remove("error-blink");
+        field.style.boxShadow = "";
+
+        if (descriptionTag === "Credentialing Coordinator Name") {
+            field.style.border = "none";
+            field.style.backgroundColor = "rgba(226,232,240,0.9)";
+        } else {
+            field.style.border = "1px solid #9ca3af";
+            field.style.backgroundColor = "#ffffff";
+        }
+    }
+}
+// Provider Type Validation (DC / TH / CAM)
+
+const providerTypeRadios = document.getElementsByName("provider_type");
+
+const providerTypeSelected = Array.from(providerTypeRadios).some(
+    radio => radio.checked
+);
+
+if (!providerTypeSelected) {
+
+    unmappedFieldsList.push("Provider Type (DC / TH / CAM)");
+
+    providerTypeRadios.forEach(radio => {
+
+        radio.classList.add("error-blink");
+
+        radio.style.outline = "4px solid #7f1d1d";
+        radio.style.outlineOffset = "3px";
+
+        setTimeout(() => {
+            radio.classList.remove("error-blink");
+            radio.style.outline = "";
+        }, 120000);
+
+    });
+
+} else {
+
+    providerTypeRadios.forEach(radio => {
+
+        radio.classList.remove("error-blink");
+        radio.style.outline = "";
+        radio.style.outlineOffset = "";
+
+    });
+
+}
+    // 2. Verifies that exactly one option is checked from your top choice options
+    const unifiedCredTypeSelector = document.getElementsByName("cred_type");
+    let applicationTypeHasInput = Array.from(unifiedCredTypeSelector).some(radioField => radioField.checked);
+
+    if (!applicationTypeHasInput) {
+        unmappedFieldsList.push("Application Credentialing Type Selection");
+    }
+
+// 3. Scan Matrix Evaluation Rows
+for (let rowId = 1; rowId <= 15; rowId++) {
+
+    const matrixGroup =
+        document.getElementsByName(`criteria_row_${rowId}`);
+
+    if (matrixGroup.length > 0) {
+
+        if (rowId === 4) {
+
+    const row4NA =
+        document.querySelector('input[name="na_row_4"]');
+
+    const radioSelected =
+        Array.from(matrixGroup).some(
+            radio => radio.checked
+        );
+
+    const naSelected =
+        row4NA && row4NA.checked;
+
+    // TRUE OR FALSE OR NA => VALID
+    if (radioSelected || naSelected) {
+
+        const rowElement =
+            matrixGroup[0].closest("tr");
+
+        if (rowElement) {
+
+            rowElement.classList.remove("error-blink");
+            rowElement.style.backgroundColor = "";
+
+        }
+
+        continue;
+    }
+}
+
+        let groupSelectedState =
+            Array.from(matrixGroup).some(
+                radioInput => radioInput.checked
+            );
+
+        if (!groupSelectedState) {
+
+            let displayRowName = rowId;
+
+            if (rowId === 2)
+                displayRowName = "2 (First Part)";
+
+            if (rowId === 3)
+                displayRowName = "2 (Second Part)";
+
+            if (rowId === 4)
+                displayRowName = "Work History";
+
+            unmappedFieldsList.push(
+                `Clean Criteria Metric Check: ${displayRowName}`
+            );
+
+            const rowElement =
+                matrixGroup[0].closest("tr");
+
+            if (rowElement) {
+
+                rowElement.style.backgroundColor = "#fee2e2";
+
+                rowElement.classList.add("error-blink");
+
+                setTimeout(() => {
+                    rowElement.classList.remove("error-blink");
+                }, 120000);
+            }
+        }
+    }
+}
+
+    // 4. [PERFECT SYNCHRONIZATION] Strict 3-Year Rolling Past Lookback & Conditional Blank Check Engine
+    const historicalDateField = document.querySelector('input[name="last_credentialing_date"]');
+    const bypassModeToggle = document.querySelector('input[name="na_initial_row_16"]'); // Perfectly synched to row 15 NA check
+
+    // नियम अ: अगर यूजर ने तारीख वाले बॉक्स में कुछ भी टाइप या सिलेक्ट किया है (भले ही N/A टिक हो या न हो)
+    if (historicalDateField && historicalDateField.value.trim()) {
+        const clientSelectedDate = new Date(historicalDateField.value);
+        const baselineToday = new Date();
+        
+        // Time parameters को रिमूव करें ताकि सिर्फ कैलेंडर तारीखों का सटीक मिलान हो सके
+        baselineToday.setHours(0, 0, 0, 0);
+        clientSelectedDate.setHours(0, 0, 0, 0);
+
+        // rolling 3-years boundary line सेट करें (2023 से 2026 के बीच)
+        const rollingThreeYearsAgoLimit = new Date(baselineToday);
+        rollingThreeYearsAgoLimit.setFullYear(baselineToday.getFullYear() - 3);
+
+       // अगर तारीख आज की है, भविष्य की है, या 3 साल से पुरानी है, तो बिना पूछे कड़ा ब्लॉक अलर्ट मारें
+if (clientSelectedDate >= baselineToday || clientSelectedDate < rollingThreeYearsAgoLimit) {
+
+    alert(
+        `❌ Invalid Date Range Selected:\n\n` +
+        `The date entered for 'Last Completed Credentialing Date' must fall strictly inside a rolling 3-year past lookback window.\n\n` +
+        `• Today's date (${baselineToday.toLocaleDateString()}) and future dates are blocked.\n` +
+        `• Historical metrics prior to ${rollingThreeYearsAgoLimit.toLocaleDateString()} are blocked.`
+    );
+
+    historicalDateField.style.border = "4px solid #7f1d1d";
+    historicalDateField.style.backgroundColor = "#fecaca";
+    historicalDateField.style.boxShadow = "0 0 20px #ff0000";
+
+    historicalDateField.classList.add("error-blink");
+    historicalDateField.focus();
+
+    setTimeout(() => {
+        historicalDateField.classList.remove("error-blink");
+    }, 120000); // 2 minutes
+
+    return false; // PDF Download Block
+
+} else {
+
+    historicalDateField.classList.remove("error-blink");
+    historicalDateField.style.border = "1px solid #9ca3af";
+    historicalDateField.style.backgroundColor = "#f8fafc";
+    historicalDateField.style.boxShadow = "none";
+
+}
+
+} else {
+
+    alert(
+        "❌ Last Completed Credentialing Date is mandatory.\n\nPlease select a date before downloading PDF."
+    );
+
+    historicalDateField.style.border = "4px solid #7f1d1d";
+    historicalDateField.style.backgroundColor = "#fecaca";
+    historicalDateField.style.boxShadow = "0 0 20px #ff0000";
+
+    historicalDateField.classList.add("error-blink");
+    historicalDateField.focus();
+
+    setTimeout(() => {
+        historicalDateField.classList.remove("error-blink");
+    }, 120000); // 2 minutes
+
+    return false;
+}
+    // 5. Verification Check and Interactive Prompt Confirmation
+    if (unmappedFieldsList.length > 0) {
+        let alertPayloadMessage = "⚠️ Alert: Form Elements Left Unchecked\n\nThe following checklist parameters are currently empty:\n\n" + 
+                                  unmappedFieldsList.map(itemStr => `  • ${itemStr}`).join("\n") + 
+                                  "\n\nWould you like to bypass these fields and proceed with the PDF download anyway?";
+        
+       const clientResponseOverride = confirm(alertPayloadMessage);
+
+if (!clientResponseOverride) {
+    return false;
+}
+    }
+
+    return true; 
+}
+function processPipelineExecution() {
+
+    const pathClear = runSystemDataSanitization();
+
+    if (!pathClear) {
+        return;
+    }
+
+    const element = document.querySelector(".form-container");
+
+    window.scrollTo(0, 0);
+
+    element.style.backgroundColor = "#ffffff";
+    element.style.background = "#ffffff";
+
+    // --- [Date Swapping Logic] Forces MM/DD/YYYY Text Format ---
+    const dateInputs = element.querySelectorAll("input[type='date']");
+    const originalInputsData = [];
+
+    dateInputs.forEach((input) => {
+        if (input.value) {
+            // Split YYYY-MM-DD and reconstruct into MM/DD/YYYY
+            const [year, month, day] = input.value.split('-');
+            const formattedDate = `${month}/${day}/${year}`;
+
+            // Create a clean text replacement node
+            const span = document.createElement("span");
+            span.className = "temp-pdf-date";
+            span.innerText = formattedDate;
+            
+            // Clean inline visual design matching your form layout exactly
+            span.style.display = "inline-block";
+            span.style.boxSizing = "border-box";
+            span.style.width = "135px"; // Matches typical native date input field width
+            span.style.height = "26px";
+            span.style.lineHeight = "24px";
+            span.style.fontSize = "13px";
+            span.style.fontFamily = "inherit";
+            span.style.padding = "0 8px";
+            span.style.border = "1px solid #9ca3af";
+            span.style.borderRadius = "4px";
+            span.style.backgroundColor = "#f8fafc";
+            span.style.color = "#111111";
+            span.style.verticalAlign = "middle";
+
+            // Swap out the interactive field for the clean text layout
+            input.style.display = "none";
+            input.parentNode.insertBefore(span, input);
+
+            originalInputsData.push({ input, span });
+        }
+    });
+    // --- [End of Date Swapping Logic] ---
+
+    const elementHeight = element.scrollHeight + 100;
+    const elementWidth = element.scrollWidth + 30;
+
+    const options = {
+        margin: 0,
+        filename: "Credentialing_Application_Checklist.pdf",
+        image: {
+            type: "jpeg",
+            quality: 1
+        },
+        html2canvas: {
+            scale: 2,
+            backgroundColor: "#ffffff",
+            useCORS: true,
+            logging: false,
+            scrollX: 0,
+            scrollY: 0
+        },
+        jsPDF: {
+            unit: "px",
+            format: [elementWidth, elementHeight],
+            orientation: elementWidth > elementHeight ? "landscape" : "portrait",
+            compress: true
+        },
+        pagebreak: {
+            mode: ['avoid-all']
+        }
+    };
+
+    // Generate document and restore natural interactive field states
+    html2pdf()
+        .set(options)
+        .from(element)
+        .save()
+        .then(() => {
+            // Safe removal of temporary spans and restoration of date selectors
+            originalInputsData.forEach(({ input, span }) => {
+                if (span && span.parentNode) {
+                    span.parentNode.removeChild(span);
+                }
+                input.style.display = ""; 
+            });
+        });
+}
+
+    </script>
+<script>
+
+// Disable Right Click
+document.addEventListener("contextmenu", function (e) {
+    e.preventDefault();
+});
+
+// Disable F12
+document.addEventListener("keydown", function (e) {
+
+    if (e.key === "F12") {
+        e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key === "I") {
+        e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key === "J") {
+        e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.shiftKey && e.key === "C") {
+        e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.key === "u") {
+        e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.key === "s") {
+        e.preventDefault();
+    }
+
+    if (e.ctrlKey && e.key === "p") {
+        e.preventDefault();
+    }
+
+});
+
+// YAHAN SE LICENSE CODE START
+const _D = s => atob(s);
+
+const MASTER_KEY = _D("RFdBUktBREVTSDE0QVI=");
+
+const LICENSES = JSON.parse(
+_D(
+"eyJBSy1FQ0xJUFNFLUE3SzkiOiIyMDI2LTEwLTMxIiwiQUstRUNMSVBTRS1NMlA4IjoiMjAyNi0xMi0zMSIsIkFLLUVDTElQU0UtWDVSNCI6IjIwMjctMDItMjgiLCJBSy1FQ0xJUFNFLVE4VDEiOiIyMDI3LTA0LTMwIiwiQUstRUNMSVBTRS1MM043IjoiMjAyNy0wNi0zMCIsIkFLLUVDTElQU0UtVjZEMiI6IjIwMjctMDgtMzEiLCJBSy1FQ0xJUFNFLUM5SzUiOiIyMDI3LTEwLTMxIiwiQUstRUNMSVBTRS1CNFk4IjoiMjAyNy0xMi0zMSIsIkFLLUVDTElQU0UtSDdXMyI6IjIwMjgtMDItMjkiLCJBSy1FQ0xJUFNFLVoyRjYiOiIyMDI4LTA0LTMwIn0="
+)
+);
+
+
+const BUILD_DATE = new Date("2026-09-13");
+const TRIAL_DAYS = 60;
+
+function validateLicense() {
+
+    const trialExpiry = new Date(BUILD_DATE);
+    trialExpiry.setDate(trialExpiry.getDate() + TRIAL_DAYS);
+
+    const today = new Date();
+
+    // Trial Period
+    if (today <= trialExpiry) {
+        return true;
+    }
+
+    let licenseKey =
+        localStorage.getItem("credentialing_license");
+
+    // No saved license
+    if (!licenseKey) {
+
+        alert(
+            "Trial period expired.\n\n" +
+            "Please enter a valid license key."
+        );
+
+        licenseKey = prompt("Enter License Key:");
+
+        if (!licenseKey) {
+            return false;
+        }
+
+        licenseKey = licenseKey.trim().toUpperCase();
+
+        if (
+    !LICENSES[licenseKey] &&
+    licenseKey !== MASTER_KEY
+) {
+
+    alert(
+        "Invalid License Key.\n\n" +
+        "Please contact the administrator."
+    );
+
+    return false;
+}
+if (licenseKey === MASTER_KEY) {
+
+    localStorage.setItem(
+        "credentialing_license",
+        licenseKey
+    );
+
+    return true;
+}
+        const expiry =
+            new Date(
+                LICENSES[licenseKey] +
+                "T23:59:59"
+            );
+
+        if (today > expiry) {
+
+            alert(
+                "License Expired\n\n" +
+                "Expiry Date: " +
+                LICENSES[licenseKey]
+            );
+
+            return false;
+        }
+
+        localStorage.setItem(
+            "credentialing_license",
+            licenseKey
+        );
+
+        return true;
+    }
+
+    // Validate stored license
+    licenseKey =
+        licenseKey.trim().toUpperCase();
+
+    if (
+    !LICENSES[licenseKey] &&
+    licenseKey !== MASTER_KEY
+) {
+
+    localStorage.removeItem(
+        "credentialing_license"
+    );
+
+    alert("Invalid License Key");
+
+    return false;
+}
+if (licenseKey === MASTER_KEY) {
+    return true;
+}
+    const expiryDate =
+        new Date(
+            LICENSES[licenseKey] +
+            "T23:59:59"
+        );
+
+    if (today > expiryDate) {
+
+        localStorage.removeItem(
+            "credentialing_license"
+        );
+
+        alert(
+            "License Expired\n\n" +
+            "Expiry Date: " +
+            LICENSES[licenseKey]
+        );
+
+        return false;
+    }
+
+    return true;
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        if (!validateLicense()) {
+
+            document.body.innerHTML = `
+            <div style="
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100vh;
+                font-family:Arial;
+                text-align:center;
+                background:#f8fafc;
+            ">
+                <div>
+                    <h2>License Required</h2>
+                    <p>
+                        This application can no longer be used
+                        without a valid license.
+                    </p>
+                </div>
+            </div>
+            `;
+        }
+    }
+);
+</script>
+</body>
+</html>
