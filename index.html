@@ -817,7 +817,7 @@ tbody {
                             <!-- Date picker moved cleanly to the second line with auto-current-date class helper -->
                             <div style="margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
                                 <span>Verified on:</span>
-                                <input type="date" name="verified_date_row_11" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                <input type="date" name="verified_date_row_11" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
                             </div>
                         </td>
                         
@@ -869,7 +869,7 @@ tbody {
                                 
                                 <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
                                     <!-- Automatically sets today's date on load -->
-                                    <input type="date" name="verified_date_row_13" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
+                                    <input type="date" name="verified_date_row_13" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
                                 </span>
                             </div>
                         </td>
@@ -1501,8 +1501,96 @@ if (clientSelectedDate >= baselineToday || clientSelectedDate < rollingThreeYear
     historicalDateField.focus();
 
     setTimeout(() => {
-        historicalDateField.classList.remove("error-blink");
-    }, 120000); // 2 minutes
+    historicalDateField.classList.remove("error-blink");
+}, 120000);
+
+// YE HATA DO
+// return false;
+
+unmappedFieldsList.push(
+    "Last Completed Credentialing Date"
+);
+}
+// Row 10 - NPDB Date
+
+const npdbDate =
+document.querySelector(
+'input[name="verified_date_row_11"]'
+);
+
+if (!npdbDate.value) {
+
+    npdbDate.style.border =
+        "4px solid red";
+
+    npdbDate.style.backgroundColor =
+        "#fecaca";
+
+    npdbDate.classList.add(
+        "error-blink"
+    );
+
+    unmappedFieldsList.push(
+        "NPDB Verification Date"
+    );
+}
+
+const attestationDate =
+document.querySelector(
+'input[name="verified_date_row_13"]'
+);
+
+if (!attestationDate.value) {
+
+    attestationDate.style.border =
+        "4px solid red";
+
+    attestationDate.style.backgroundColor =
+        "#fecaca";
+
+    attestationDate.classList.add(
+        "error-blink"
+    );
+
+    unmappedFieldsList.push(
+        "Attestation Date"
+    );
+}
+
+// Mandatory Date Validation
+
+["verified_date_row_11", "verified_date_row_13"]
+.forEach(fieldName => {
+
+    const field =
+        document.querySelector(
+            `input[name="${fieldName}"]`
+        );
+
+    if (field && !field.value.trim()) {
+
+        unmappedFieldsList.push(fieldName);
+
+        field.classList.add("error-blink");
+
+        field.style.border =
+            "4px solid #ff0000";
+    }
+});
+if (
+    !historicalDateField.value ||
+    !npdbDate.value ||
+    !attestationDate.value
+) {
+
+    alert(
+        "❌ Mandatory Date Missing.\n\n" +
+        "Please complete:\n" +
+        "• Last Completed Credentialing Date\n" +
+        "• NPDB Verification Date\n" +
+        "• Attestation Date\n\n" +
+        "PDF download is blocked until all mandatory dates are completed."
+    );
 
     return false;
 }
