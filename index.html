@@ -436,26 +436,65 @@ tbody {
                         <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
                         <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">2</td>
                         
-                        <!-- Combined Verification Text and Date Inputs Block (Proportional 77% Width Layout without Inner Divider) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.8;">
-                            <!-- Top Question Area -->
-                            <div>
-                                Provider has a current, valid license in state of practice for specialty? 
-                                <span style="margin-left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <input type="date" name="verified_date_row_2_a" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
-                                </span>
-                            </div>
-                            
-                            <!-- Bottom Question Area -->
-                            <div style="margin-top: 8px;">
-                                No State Board (licensure) actions against the provider? 
-                                <span style="margin-left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <input type="date" name="verified_date_row_2_b" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
-                                </span>
-                            </div>
-                        </td>
+                       <!-- Combined Verification Text and Date Inputs Block (Proportional 77% Width Layout without Inner Divider) -->
+<td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.8;">
+    <!-- Top Question Area -->
+    <div>
+        Provider has a current, valid license in state of practice for specialty? 
+        <span style="margin-left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px;">
+            <span>Verified on:</span>
+            <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_2_a" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+        </span>
+    </div>
+    
+    <!-- Bottom Question Area -->
+    <div style="margin-top: 8px;">
+        No State Board (licensure) actions against the provider? 
+        <span style="margin-left: 10px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px;">
+            <span>Verified on:</span>
+            <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_2_b" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+        </span>
+    </div>
+</td>
+
+<script>
+    // 1. Page load hote hi aaj ki date (MM/DD/YYYY) automatic bharne ke liye
+    function setDefaultDate() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); // January 0 hota hai
+        let yyyy = today.getFullYear();
+        
+        let formattedDate = `${mm}/${dd}/${yyyy}`;
+        
+        document.querySelectorAll('.excel-exact-date').forEach(input => {
+            if (!input.value) {
+                input.value = formattedDate;
+            }
+        });
+    }
+
+    // Function ko run karein
+    setDefaultDate();
+
+    // 2. Excel Paste Handling (Format strict rakhne ke liye)
+    document.querySelectorAll('.excel-exact-date').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            
+            // Agar Excel se YYYY-MM-DD format aaye, toh use MM/DD/YYYY me convert karein
+            if (pastedText.includes('-')) {
+                let parts = pastedText.split('-');
+                if (parts.length === 3 && parts[0].length === 4) {
+                    pastedText = `${parts[1]}/${parts[2]}/${parts[0]}`;
+                }
+            }
+            this.value = pastedText;
+        });
+    });
+</script>
+
                         
                         <!-- TRUE Matrix Selector Fields (Proportional 10% Width Layout Stacked without Divider Line) -->
                         <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
@@ -485,354 +524,843 @@ tbody {
                             </div>
                         </td>
                     </tr>
+<!-- Item Row 3 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">3</td>
+    
+    <!-- Main Text Cell with Dropdown, Date, and Clean NA Checkbox (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div>
+            Work History: Consecutive 5 years of work history present or history since licensure is present with <strong>No</strong> gaps greater than 1 year and explanation of gaps greater than 6 months? 
+            <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <span>Verified on:</span>
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_4" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+        </div>
+        
+        <!-- Bottom Control Line inside the Text Box -->
+        <div style="margin-top: 6px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+            <!-- Source Dropdown Select Element -->
+            <div style="display: inline-flex; align-items: center; gap: 6px;">
+                <span style="font-weight: bold;">Source:</span>
+                <select name="source_row_4" style="padding: 2px 6px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
+                    <option value="Application">Application</option>
+                    <option value="CV / Resume">Provider Correspondence</option>
+                </select>
+            </div>
+
+            <!-- Image Se Exact Clean Match Checkbox Area -->
+            <div style="display: inline-flex; align-items: center; gap: 10px; margin-right: 1px;">
+    <span style="font-weight: bold; font-size: 13px;">
+        NA this is recred
+    </span>
+
+    <input type="checkbox"
+           name="na_recred_row_4"
+           checked
+           style="cursor: pointer; transform: scale(1.15); margin: 0;">
+</div>
+        </div>
+    </td>
+    
+    <!-- TRUE Column Option Circle -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
+        <div style="height: 32px; display: flex; align-items: center; justify-content: center;">
+            <input type="radio" name="criteria_row_4" value="TRUE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                   onclick="toggleFlNoticeWithToast(this, true)">
+        </div>
+    </td>
+    
+    <!-- FALSE Column Option Circle -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
+        <div style="height: 32px; display: flex; align-items: center; justify-content: center;">
+            <input type="radio" name="criteria_row_4" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+                   onclick="toggleFlNoticeWithToast(this, false)">
+        </div>
+    </td>
+</tr>
+
+<!-- Pure Clean Floating Toast Notification Structure (No OK Button) -->
+<div id="flStateToast" style="display: none; position: fixed; top: 25px; right: 25px; z-index: 99999; background: #ffffff; border-left: 6px solid #dc2626; padding: 18px 28px; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); display: flex; align-items: center; gap: 16px; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s; opacity: 0; font-family: inherit; min-width: 340px; pointer-events: none;">
+    <!-- Large Warning Icon -->
+    <div style="width: 30px; height: 30px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #dc2626; font-weight: bold; font-size: 18px; flex-shrink: 0;">!</div>
+    
+    <!-- Prominent Text Area -->
+    <div style="font-size: 14px; color: #1e293b; font-weight: 500; line-height: 1.4;">
+        State Restriction: Configured <span style="color: #dc2626; font-weight: 700;">Only for FL State</span> profiles.
+    </div>
+</div>
+
+<script>
+    let toastTimeout;
+
+    function toggleFlNoticeWithToast(radioInput, isTrueClicked) {
+        let toast = document.getElementById("flStateToast");
+
+        // 1. Double click handle - wapas blank/uncheck karne ke liye
+        if (radioInput.wasChecked) {
+            radioInput.checked = false;
+            radioInput.wasChecked = false;
+            hideToast();
+            return;
+        }
+
+        // 2. Radio group selection memory clear karein
+        document.getElementsByName(radioInput.name).forEach(r => {
+            r.wasChecked = false;
+        });
+
+        // 3. Pehle blue dot instantly safe aur check ho jayega
+        radioInput.checked = true;
+        radioInput.wasChecked = true;
+
+        // 4. Agar TRUE select hua toh alert slide hoga, FALSE par hide hoga
+        if (isTrueClicked) {
+            showToast();
+        } else {
+            hideToast();
+        }
+    }
+
+    function showToast() {
+        let toast = document.getElementById("flStateToast");
+        clearTimeout(toastTimeout);
+        
+        toast.style.display = "flex";
+        
+        requestAnimationFrame(() => {
+            toast.style.transform = "translateX(0)";
+            toast.style.opacity = "1";
+        });
+
+        // Strict 5 seconds (5000ms) timer for automatic slide out
+        toastTimeout = setTimeout(() => {
+            hideToast();
+        }, 5000);
+    }
+
+    function hideToast() {
+        let toast = document.getElementById("flStateToast");
+        toast.style.transform = "translateX(120%)";
+        toast.style.opacity = "0";
+        setTimeout(() => {
+            if(toast.style.opacity === "0") {
+                toast.style.display = "none";
+            }
+        }, 300);
+    }
+
+    // Automatic date injection handler
+    function fillTodayDate() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        document.querySelectorAll('.excel-exact-date').forEach(input => {
+            if (!input.value) {
+                input.value = formatted;
+            }
+        });
+    }
+    fillTodayDate();
+
+    // Excel clipboard formatting engine
+    document.querySelectorAll('.excel-exact-date').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts.trim(), p1 = parts.trim(), p2 = parts.trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+        });
+    });
+</script>
 
 
+<!-- Item Row 4 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">4</td>
+    
+    <!-- Main Text Cell with Date Picker and Previously Reviewed Checkbox (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div>
+            Disclosure questions are answered <strong>"NO"</strong>? 
+            <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <span>Verified on:</span>
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_5" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+        </div>
+        
+        <!-- Bottom Control Line inside the Text Box -->
+        <div style="margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; font-size: 12px;">
+            <!-- Previously Reviewed Checkbox aligned right -->
+            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer;">
+                <span>Previously Reviewed</span>
+                <input type="checkbox" name="previous_reviewed_5" style="transform: scale(1.3); margin: 0; cursor: pointer;">
+            </label>
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Pre-Checked) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_5" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="handleRow5RadioWithToast(this, 'meets', true)">
+    </td>
+    
+    <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_5" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="handleRow5RadioWithToast(this, 'not_meets', false)">
+    </td>
+</tr>
 
-<!-- Item Row 3 (Previously Row 4) -->
-                          <!-- Item Row 3 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">3</td>
-                        
-                        <!-- Main Text Cell with Dropdown, Date, and Independent NA Checkbox (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div>
-                                Work History: Consecutive 5 years of work history present or history since licensure is present with <strong>No</strong> gaps greater than 1 year and explanation of gaps greater than 6 months? 
-                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <input type="date" name="verified_date_row_4" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
-                                </span>
-                            </div>
-                            
-                            <!-- Bottom Control Line inside the Text Box -->
-                            <div style="margin-top: 6px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
-                                <!-- Source Dropdown Select Element -->
-                                <div style="display: inline-flex; align-items: center; gap: 6px;">
-                                    <span style="font-weight: bold;">Source:</span>
-                                    <select name="source_row_4" style="padding: 2px 6px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
-                                        <option value="Application">Application</option>
-                                        <option value="CV / Resume">Provider Correspondence</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- NA Checkbox: Fully independent without clearing the radio choices -->
-                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer;">
-                                    <span>NA this is recred</span>
-                                    <input type="checkbox" name="na_row_4" style="transform: scale(1.3); margin: 0; cursor: pointer;">
-                                </label>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_4" value="TRUE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="alert('FL state only can have true'); if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_4').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_4" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_4').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<!-- Dynamic Wide Floating Toast Notification Container structure specific for Row 4 mapping events -->
+<div id="row4DecisionToast" style="display: none; position: fixed; top: 25px; right: 25px; z-index: 99999; background: #ffffff; border-left: 6px solid #10b981; padding: 18px 28px; border-radius: 8px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); display: flex; align-items: center; gap: 16px; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s; opacity: 0; font-family: inherit; min-width: 420px; max-width: 500px; pointer-events: none;">
+    <!-- Icon area that updates color dynamically based on selection state -->
+    <div id="row4ToastIcon" style="width: 30px; height: 30px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #10b981; font-weight: bold; font-size: 18px; flex-shrink: 0;">✓</div>
+    
+    <!-- Content message wrapper tracking decision text blocks -->
+    <div id="row4ToastText" style="font-size: 13.5px; color: #1e293b; font-weight: bold; line-height: 1.4; white-space: normal;"></div>
+</div>
+
+<script>
+    let row4ToastTimeout;
+
+    // Smart Selection mapping listener with integrated safe toast engine
+    function handleRow5RadioWithToast(radioInput, targetStatusValue, isTrueSelection) {
+        // Double click filter setup - unchecks natively if re-clicked
+        if (radioInput.wasChecked) {
+            radioInput.checked = false;
+            radioInput.wasChecked = false;
+            hideRow4Toast();
+            return;
+        }
+        
+        document.getElementsByName(radioInput.name).forEach(r => r.wasChecked = false);
+        radioInput.wasChecked = true;
+        
+        // 1. Force state synchronization down to the native final_clean_status radio rows
+        if (radioInput.checked) {
+            const targetRadio = document.querySelector(`input[name="final_clean_status"][value="${targetStatusValue}"]`);
+            if (targetRadio) {
+                document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false);
+                targetRadio.checked = true;
+                targetRadio.wasChecked = true;
+            }
+
+            // 2. Dispatch dynamic content block payload directly into notification layout elements
+            let toastMessage = "";
+            let isMeetsMode = (targetStatusValue === 'meets');
+            
+            if (isMeetsMode) {
+                toastMessage = 'Application <span style="text-decoration: underline; color: #10b981;">meets all clean criteria</span> and is ready for approval (all questions above answered TRUE).';
+            } else {
+                toastMessage = 'Application does <span style="text-decoration: underline; color: #dc2626;">not</span> meet clean criteria and is sent for Clinical Review.';
+            }
+            
+            showRow4Toast(toastMessage, isMeetsMode);
+        }
+    }
+
+    function showRow4Toast(messageHtml, isMeetsMode) {
+        let toast = document.getElementById("row4DecisionToast");
+        let icon = document.getElementById("row4ToastIcon");
+        let textContainer = document.getElementById("row4ToastText");
+        
+        clearTimeout(row4ToastTimeout);
+        textContainer.innerHTML = messageHtml;
+        
+        // Theme updates based on selection criteria
+        if (isMeetsMode) {
+            toast.style.borderLeftColor = "#10b981";
+            icon.style.backgroundColor = "#d1fae5";
+            icon.style.color = "#10b981";
+            icon.innerHTML = "✓";
+        } else {
+            toast.style.borderLeftColor = "#dc2626";
+            icon.style.backgroundColor = "#fee2e2";
+            icon.style.color = "#dc2626";
+            icon.innerHTML = "!";
+        }
+        
+        toast.style.display = "flex";
+        
+        requestAnimationFrame(() => {
+            toast.style.transform = "translateX(0)";
+            toast.style.opacity = "1";
+        });
+
+        // 5 seconds automatic sliding viewport exit configuration timer
+        row4ToastTimeout = setTimeout(() => {
+            hideRow4Toast();
+        }, 5000);
+    }
+
+    function hideRow4Toast() {
+        let toast = document.getElementById("row4DecisionToast");
+        if (!toast) return;
+        toast.style.transform = "translateX(120%)";
+        toast.style.opacity = "0";
+        setTimeout(() => {
+            if(toast.style.opacity === "0") {
+                toast.style.display = "none";
+            }
+        }, 300);
+    }
+
+    // Default configuration scripts for auto dates and format pastes
+    function fillTodayDate() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        document.querySelectorAll('.excel-exact-date').forEach(input => {
+            if (input.name === "verified_date_row_5" && !input.value) {
+                input.value = formatted;
+            }
+        });
+    }
+    fillTodayDate();
+
+    document.querySelectorAll('input[name="verified_date_row_5"]').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts.trim(), p1 = parts.trim(), p2 = parts.trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+        });
+    });
+
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => r.wasChecked = true);
+</script>
 
 
-<!-- Item Row 4 (Previously Row 5) -->
-                          <!-- Item Row 4 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">4</td>
-                        
-                        <!-- Main Text Cell with Date Picker and Previously Reviewed Checkbox (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div>
-                                Disclosure questions are answered <strong>"NO"</strong>? 
-                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <input type="date" name="verified_date_row_5" class="auto-current-date" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc;">
-                                </span>
-                            </div>
-                            
-                            <!-- Bottom Control Line inside the Text Box -->
-                            <div style="margin-top: 6px; display: flex; align-items: center; justify-content: flex-end; font-size: 12px;">
-                                <!-- Previously Reviewed Checkbox aligned right -->
-                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer;">
-                                    <span>Previously Reviewed</span>
-                                    <input type="checkbox" name="previous_reviewed_5" style="transform: scale(1.3); margin: 0; cursor: pointer;">
-                                </label>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Pre-Checked) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_5" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_5').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_5" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_5').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
 
 <!-- Item Row 5 (No OIG Sanctions - Shrunk Height & Dark Black Borders) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">5</td>
-                        
-                        <!-- Main Text Cell with Date Picker and Source Hyperlink (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div>
-                                No OIG (Medicare/Medicaid) sanctions against provider? 
-                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <!-- Left intentionally blank without auto-date class so it remains empty initially -->
-                                    <input type="date" name="verified_date_row_6" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                                <span style="margin-left: 15px; font-size: 12px;">Source:</span>
-                            </div>
-                            <!-- Static Source URL Hyperlink Area -->
-                            <div style="margin-top: 2px;">
-                                <a href="https://exclusions.oig.hhs.gov/" target="_blank" style="color: #111111; text-decoration: underline; font-size: 12px;">https://exclusions.oig.hhs.gov/</a>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Checked) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_6" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_6').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_6" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_6').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">5</td>
+    
+    <!-- Main Text Cell with Date Picker and Source Hyperlink (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div>
+            No OIG (Medicare/Medicaid) sanctions against provider? 
+            <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <span>Verified on:</span>
+                <!-- input event joda hai jo value change hote hi automatic 6 aur 7 me push karega -->
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_6" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" oninput="syncDatesToNextRows(this.value)" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+            <span style="margin-left: 15px; font-size: 12px;">Source:</span>
+        </div>
+        <!-- Static Source URL Hyperlink Area -->
+        <div style="margin-top: 2px;">
+            <a href="https://exclusions.oig.hhs.gov/" target="_blank" style="color: #111111; text-decoration: underline; font-size: 12px;">https://exclusions.oig.hhs.gov/</a>
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Checked) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_6" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_6').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+    
+    <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_6" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_6').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+</tr>
+
+<script>
+    // Smart Sync Function: Row 5 se date utha kar Row 6 aur 7 me fill karega (Conditional Copy)
+    function syncDatesToNextRows(currentDateValue) {
+        const row6Input = document.querySelector('input[name="verified_date_row_7"]'); // Row 6
+        const row7Input = document.querySelector('input[name="verified_date_row_8"]'); // Row 7
+        const row7NaCheckbox = document.getElementById('na_checkbox_row_8');          // Row 7 ka N/A Checkbox
+        
+        // Row 6 me hamesha date jayegi
+        if (row6Input) {
+            row6Input.value = currentDateValue;
+        }
+        
+        // Row 7 me sirf TABHI date jayegi jab N/A par check-mark/tick NA HO
+        if (row7Input) {
+            if (row7NaCheckbox && row7NaCheckbox.checked) {
+                row7Input.value = ''; // Agar N/A ticked hai toh blank hi rahega
+            } else {
+                row7Input.value = currentDateValue; // Agar N/A unticked hai toh copy ho jayega
+            }
+        }
+    }
+
+    // Excel custom paste module (Row 5 ke liye)
+    document.querySelectorAll('.excel-exact-date').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+            
+            // Paste hone par bhi conditional sync chalega
+            if (this.name === 'verified_date_row_6') {
+                syncDatesToNextRows(pastedText);
+            }
+        });
+    });
+    
+</script>
+
+
 
 <!-- Item Row 6 (No GSA Sanctions - Shrunk Height & Dark Black Borders) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">6</td>
-                        
-                        <!-- Main Text Cell with Date Picker and Source Hyperlink (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div>
-                                No GSA (Medicare/Medicaid) sanctions against provider? 
-                                <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <!-- Left intentionally blank without auto-date class so it remains empty initially -->
-                                    <input type="date" name="verified_date_row_7" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                                <span style="margin-left: 15px; font-size: 12px;">Source:</span>
-                            </div>
-                            <!-- Static Source URL Hyperlink Area -->
-                            <div style="margin-top: 2px;">
-                                <a href="https://www.sam.gov/portal/SAM/#1#1" target="_blank" style="color: #111111; text-decoration: underline; font-size: 12px;">https://www.sam.gov/portal/SAM/#1#1</a>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Checked) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_7" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_7').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_7" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_7').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">6</td>
+    
+    <!-- Main Text Cell with Date Picker and Source Hyperlink (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div>
+            No GSA (Medicare/Medicaid) sanctions against provider? 
+            <span style="margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <span>Verified on:</span>
+                <!-- input type="text" with uniform wide style, initially blank but auto-sync ready -->
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_7" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+            <span style="margin-left: 15px; font-size: 12px;">Source:</span>
+        </div>
+        <!-- Static Source URL Hyperlink Area -->
+        <div style="margin-top: 2px;">
+            <a href="https://www.sam.gov/portal/SAM/#1#1" target="_blank" style="color: #111111; text-decoration: underline; font-size: 12px;">https://www.sam.gov/portal/SAM/#1#1</a>
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout & Default Checked) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_7" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_7').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+    
+    <!-- FALSE Matrix Selector Narrow Field Bracket (Proportional 10% Width Layout) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_7" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_7').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+</tr>
 
  <!-- Item Row 7 (No State Medicaid Exclusions - Moved to S.No 7) -->
-                    <tr>
-                        <!-- Small S.No. Cell -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">7</td>
-                        
-                        <!-- Main Text Cell with Dropdown and Date Picker -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-                                <span>No State Medicaid Exclusions?</span>
-                                
-                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <!-- Manually selected date slot: Left blank by default without auto-class -->
-                                    <input type="date" name="verified_date_row_8" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                                
-                                <!-- Default Pre-Checked N/A Checkbox -->
-                                <label style="display: inline-flex; align-items: center; gap: 4px; font-weight: bold; cursor: pointer; font-size: 12px;">
-                                    <span>N/A</span>
-                                    <input type="checkbox" name="na_row_8" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
-                                           onclick="if(this.checked) { document.getElementById('source_dropdown_row_8').value = ''; }">
-                                </label>
-                                
-                                <span style="font-size: 12px;">Source:</span>
-                            </div>
-                            
-                            <!-- State URL Source Dropdown Menu Area -->
-                            <div style="margin-top: 4px; width: 100%;">
-                                <select id="source_dropdown_row_8" name="source_row_8" style="width: 100%; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;"
-                                        onchange="if(this.value !== '') { document.getElementsByName('na_row_8')[0].checked = false; }">
-                                    <option value="">Select</option>
-                                    <option value="DC">DC - https://ocp.dc.gov/page/excluded-parties-list</option>
-                                    <option value="FL">FL - http://apps.ahca.myflorida.com/dm_web/(S(o2lem43e3awo44e1bbcinaq5))/default.aspx</option>
-                                    <option value="HI">HI - https://medquest.hawaii.gov/en/plans-providers/provider-exclusion-reinstatement-list.html</option>
-                                    <option value="IA">IA - https://dhs.iowa.gov/ime/about/aboutime/program-integrity</option>
-                                    <option value="ID">ID - https://healthandwelfare.idaho.gov/providers/idaho-medicaid-providers/information-medicaid-providers</option>
-                                    <option value="IN">IN - https://www.in.gov/fssa/ompp/4973.htm</option>
-                                    <option value="KS">KS - http://www.kdheks.gov/hcf/medicaid_program_integrity</option>
-                                    <option value="KY">KY - https://chfs.ky.gov/agencies/dms/dpi/pe/Pages/terminated.aspx</option>
-                                    <option value="LA">LA - https://adverseactions.dhh.la.gov/</option>
-                                    <option value="MA">MA - http://www.mass.gov/eohhs/gov/newsroom/masshealth/providers/list-of-suspended-or-excluded-masshealth-providers.html</option>
-                                    <option value="MD">MD - https://mmcp.dhmh.maryland.gov/Pages/About-Our-Programs.aspx</option>
-                                    <option value="MI">MI - http://www.michigan.gov/mdhhs/0,5885,7-339-71551_2945_42542_42543_42546_42551-16459--,00.html</option>
-                                    <option value="MN">MN - https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_</option>
-                                    <option value="MO">MO - https://mmac.mo.gov/providers/provider-sanctions/</option>
-                                    <option value="MS">MS - https://medicaid.ms.gov/providers/provider-terminations/</option>
-                                    <option value="NE">NE - http://dhhs.ne.gov/medicaid/Pages/med_pi_sanc.aspx</option>
-                                    <option value="NJ">NJ - http://www.state.nj.us/treasury/revenue/debarment/index.shtml</option>
-                                    <option value="NV">NV - http://dhcfp.nv.gov/Providers/PI/PSExclusions/</option>
-                                    <option value="NY">NY - https://omig.ny.gov/fraud/medicaid-exclusions</option>
-                                    <option value="NC">NC - https://medicaid.ncdhhs.gov/excluded-providers</option>
-                                    <option value="OH">OH - http://medicaid.ohio.gov/PROVIDERS/EnrollmentandSupport/ProviderExclusionandSuspensionList.aspx</option>
-                                    <option value="PA">PA - http://www.dhs.pa.gov/publications/medichecksearch/index.htm</option>
-                                    <option value="TN">TN - http://www.tn.gov/tenncare/topic/terminated-provider-list</option>
-                                    <option value="TX">TX - https://oig.hhsc.texas.gov/exclusions</option>
-                                    <option value="WA">WA - http://www.hca.wa.gov/billers-providers/apple-health-medicaid-providers/provider-termination-and-exclusion-list</option>
-                                </select>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Field Bracket (Default Pre-Checked) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_8" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_8').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Field Bracket -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_8" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_8').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr>
+    <!-- Small S.No. Cell -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">7</td>
+    
+    <!-- Main Text Cell with Dropdown and Date Picker -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+            <span>No State Medicaid Exclusions?</span>
+            
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <span>Verified on:</span>
+                <!-- input type="text" with robust copy-paste support and alignment -->
+                <input type="text" placeholder="MM/DD/YYYY" id="verified_date_row_8" name="verified_date_row_8" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+            
+            <!-- N/A Checkbox with smart date blank handler -->
+            <label style="display: inline-flex; align-items: center; gap: 4px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                <span>N/A</span>
+                <input type="checkbox" id="na_checkbox_row_8" name="na_row_8" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
+                       onclick="handleNaClick(this)">
+            </label>
+            
+            <span style="font-size: 12px;">Source:</span>
+        </div>
+        
+        <!-- State URL Source Dropdown Menu Area -->
+        <div style="margin-top: 4px; width: 100%;">
+            <select id="source_dropdown_row_8" name="source_row_8" style="width: 100%; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;"
+                    onchange="handleDropdownChange(this)">
+                <option value="">Select</option>
+                <option value="DC">DC - https://ocp.dc.gov/page/excluded-parties-list</option>
+                <option value="FL">FL - http://apps.ahca.myflorida.com/dm_web/(S(o2lem43e3awo44e1bbcinaq5))/default.aspx</option>
+                <option value="HI">HI - https://medquest.hawaii.gov/en/plans-providers/provider-exclusion-reinstatement-list.html</option>
+                <option value="IA">IA - https://dhs.iowa.gov/ime/about/aboutime/program-integrity</option>
+                <option value="ID">ID - https://healthandwelfare.idaho.gov/providers/idaho-medicaid-providers/information-medicaid-providers</option>
+                <option value="IN">IN - https://www.in.gov/fssa/ompp/4973.htm</option>
+                <option value="KS">KS - http://www.kdheks.gov/hcf/medicaid_program_integrity</option>
+                <option value="KY">KY - https://chfs.ky.gov/agencies/dms/dpi/pe/Pages/terminated.aspx</option>
+                <option value="LA">LA - https://adverseactions.dhh.la.gov/</option>
+                <option value="MA">MA - http://www.mass.gov/eohhs/gov/newsroom/masshealth/providers/list-of-suspended-or-excluded-masshealth-providers.html</option>
+                <option value="MD">MD - https://mmcp.dhmh.maryland.gov/Pages/About-Our-Programs.aspx</option>
+                <option value="MI">MI - http://www.michigan.gov/mdhhs/0,5885,7-339-71551_2945_42542_42543_42546_42551-16459--,00.html</option>
+                <option value="MN">MN - https://www.dhs.state.mn.us/main/idcplg?IdcService=GET_DYNAMIC_</option>
+                <option value="MO">MO - https://mmac.mo.gov/providers/provider-sanctions/</option>
+                <option value="MS">MS - https://medicaid.ms.gov/providers/provider-terminations/</option>
+                <option value="NE">NE - http://dhhs.ne.gov/medicaid/Pages/med_pi_sanc.aspx</option>
+                <option value="NJ">NJ - http://www.state.nj.us/treasury/revenue/debarment/index.shtml</option>
+                <option value="NV">NV - http://dhcfp.nv.gov/Providers/PI/PSExclusions/</option>
+                <option value="NY">NY - https://omig.ny.gov/fraud/medicaid-exclusions</option>
+                <option value="NC">NC - https://medicaid.ncdhhs.gov/excluded-providers</option>
+                <option value="OH">OH - http://medicaid.ohio.gov/PROVIDERS/EnrollmentandSupport/ProviderExclusionandSuspensionList.aspx</option>
+                <option value="PA">PA - http://www.dhs.pa.gov/publications/medichecksearch/index.htm</option>
+                <option value="TN">TN - http://www.tn.gov/tenncare/topic/terminated-provider-list</option>
+                <option value="TX">TX - https://oig.hhsc.texas.gov/exclusions</option>
+                <option value="WA">WA - http://www.hca.wa.gov/billers-providers/apple-health-medicaid-providers/provider-termination-and-exclusion-list</option>
+            </select>
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Field Bracket (Default Pre-Checked) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_8" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_8').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+    
+    <!-- FALSE Matrix Selector Field Bracket -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_8" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_8').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+</tr>
+
+<script>
+    // 1. N/A Click Condition Handler
+    function handleNaClick(checkbox) {
+        let dateInput = document.getElementById('verified_date_row_8');
+        let dropdown = document.getElementById('source_dropdown_row_8');
+        
+        if (checkbox.checked) {
+            dateInput.value = '';        // Date ko blank karega
+            dropdown.value = '';         // Dropdown ko 'Select' par laayega
+        }
+    }
+
+    // 2. Dropdown Change Condition Handler
+    function handleDropdownChange(dropdown) {
+        let naCheckbox = document.getElementById('na_checkbox_row_8');
+        let dateInput = document.getElementById('verified_date_row_8');
+        
+        // Row 5 ke text input element ko uske exact name se dhoondhein
+        let row5Input = document.querySelector('input[name="verified_date_row_6"]');
+        
+        if (dropdown.value !== '') {
+            naCheckbox.checked = false;  // N/A checkbox ko automatic uncheck karega
+            
+            // Row 5 ki date uthakar Row 7 me daalega
+            if (row5Input && row5Input.value) {
+                dateInput.value = row5Input.value;
+            } else {
+                dateInput.value = ''; // Agar Row 5 empty hai toh blank rakhega
+            }
+        }
+    }
+
+    // 3. Excel custom paste framework for Row 7
+    document.querySelectorAll('.excel-exact-date').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+        });
+    });
+</script>
+
+
 
 <!-- Item Row 8 (Required Education - Fixed Proportions & Today's Date Auto-Injection) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">8</td>
-                        
-                        <!-- Main Text Cell with Dropdown, Auto Today Date Picker, and NA Checkbox (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-                                <span>Provider has the required education for their specialty?</span>
-                                
-                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <span>Verified on:</span>
-                                    <!-- Re-added class to automatically fetch today's date on page load -->
-                                    <input type="date" name="verified_date_row_9" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                                
-                                <span style="font-size: 12px;">Source:</span>
-                            </div>
-                            
-                            <!-- Dropdown Select Layout Area & NA this is recred Checkbox Row -->
-                            <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
-                                <select id="source_dropdown_row_9" name="source_row_9" style="width: 250px; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
-                                    <option value="License Board">License Board</option>
-                                </select>
-                                
-                                <!-- NA Checkbox that acts completely independent -->
-                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
-                                    <span>NA this is recred</span>
-                                    <input type="checkbox" name="na_row_9" style="transform: scale(1.3); margin: 0; cursor: pointer;">
-                                </label>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_9" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_9').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_9" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_9').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">8</td>
+    
+    <!-- Main Text Cell with Dropdown, Auto Today Date Picker, and NA Checkbox (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+            <span>Provider has the required education for their specialty?</span>
+            
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <span>Verified on:</span>
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_9" class="excel-exact-date auto-current-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+            
+            <span style="font-size: 12px;">Source:</span>
+        </div>
+        
+        <!-- Dropdown Select Layout Area & NA this is recred Checkbox Row -->
+        <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
+            <select id="source_dropdown_row_9" name="source_row_9" style="width: 250px; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
+                <option value="License Board">License Board</option>
+            </select>
+            
+            <!-- Default Checked NA Checkbox -->
+            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                <span>NA this is recred</span>
+                <input type="checkbox"
+       name="na_row_9"
+       checked
+       style="transform: scale(1.3); margin: 0; cursor: pointer;"
+       onclick="handleRow8NA(this)">
+            </label>
+        </div>
+    </td>
+    
+    <!-- TRUE Column Option Circle (Default Blank) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_9" value="TRUE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="handleRow9RadioClick(this)">
+    </td>
+    
+    <!-- FALSE Column Option Circle (Default Blank) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_9" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="handleRow9RadioClick(this)">
+    </td>
+</tr>
+
+<script>
+    // Natively clear radio selections on a consecutive double click event
+    function handleRow9RadioClick(radioInput) {
+        if (radioInput.wasChecked) {
+            radioInput.checked = false;
+            radioInput.wasChecked = false;
+            return;
+        }
+        document.getElementsByName(radioInput.name).forEach(r => r.wasChecked = false);
+        radioInput.wasChecked = true;
+    }
+function handleRow8NA(checkbox) {
+
+    const row =
+        checkbox.closest("tr");
+
+    if (!row) return;
+
+    if (checkbox.checked) {
+
+        row.style.backgroundColor = "";
+
+        row.classList.remove(
+            "error-blink"
+        );
+
+        row.querySelectorAll(
+            'input[name="criteria_row_9"]'
+        ).forEach(radio => {
+
+            radio.classList.remove(
+                "error-blink"
+            );
+
+            radio.style.outline = "";
+            radio.style.outlineOffset = "";
+        });
+    }
+}
+    // Today's current text date injection loader framework
+    function initRow9DateEngine() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        document.querySelectorAll('.excel-exact-date.auto-current-date').forEach(input => {
+            if (!input.value) {
+                input.value = formatted;
+            }
+        });
+    }
+    initRow9DateEngine();
+
+    // Cross application clipboard filter module for clean copy paste
+    document.querySelectorAll('.excel-exact-date').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+        });
+    });
+
+    // Initialize flags only on pre-checked inputs on startup
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => r.wasChecked = true);
+</script>
 
 <!-- Item Row 9 (Professional Liability Insurance - Fixed Layout matching latest image layout) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">9</td>
-                        
-                        <!-- Main Text Cell with Dropdown, Auto Today Date Picker (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div>
-                                Provider has current Professional Liability Insurance that meets Optum minimum requirements? $100,000/$300,000 (minimum for DC and CAM) $1,000,000/$3,000,000 (minimum for Therapy) and meets state fund limits (if applicable) 
-                                <span style="margin-left: 4px; font-size: 12px;">Source:</span>
-                            </div>
-                            
-                            <!-- Dropdown Select Layout Area & Verified Date Input Row -->
-                            <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
-                                <select id="source_dropdown_row_10" name="source_row_10" style="width: 250px; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
-                                    <option value="Insurance Face Sheet">Insurance Face Sheet</option>
-                                    <option value="CAQH Application">CAQH Application</option>
-                                </select>
-                                
-                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; margin-right: 50px;">
-                                    <span>Verified on:</span>
-                                    <!-- Re-added class to automatically fetch today's date on page load -->
-                                    <input type="date" name="verified_date_row_10" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_10" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_10').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_10" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_10').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">9</td>
+    
+    <!-- Main Text Cell with Dropdown, Auto Today Date Picker (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div>
+            Provider has current Professional Liability Insurance that meets Optum minimum requirements? \$100,000/\$300,000 (minimum for DC and CAM) \$1,000,000/\$3,000,000 (minimum for Therapy) and meets state fund limits (if applicable) 
+            <span style="margin-left: 4px; font-size: 12px;">Source:</span>
+        </div>
+        
+        <!-- Dropdown Select Layout Area & Verified Date Input Row -->
+        <div style="margin-top: 4px; display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%;">
+            <select id="source_dropdown_row_10" name="source_row_10" style="width: 250px; padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer;">
+                <option value="Insurance Face Sheet">Insurance Face Sheet</option>
+                <option value="CAQH Application">CAQH Application</option>
+            </select>
+            
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px; margin-right: 50px;">
+                <span>Verified on:</span>
+                <!-- input type="text" with exact fixed script conversion to MM/DD/YYYY -->
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_10" class="excel-exact-date auto-current-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_10" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_10').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+    
+    <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_10" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_10').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+</tr>
+
+<script>
+    // 1. Auto load current date system handler
+    function initRow10DateEngine() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        document.querySelectorAll('.excel-exact-date.auto-current-date').forEach(input => {
+            if (input.name === "verified_date_row_10" && !input.value) {
+                input.value = formatted;
+            }
+        });
+    }
+    initRow10DateEngine();
+
+    // 2. Exact Re-ordered Copy Paste Script (Fixed YYYY-MM-DD -> MM/DD/YYYY Mismatch)
+    document.querySelectorAll('input[name="verified_date_row_10"]').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                
+                // standard fixed logic to strict MM/DD/YYYY format structure
+                if (p0.length === 4) { 
+                    pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                } else if (p2.length === 4) { 
+                    pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                } else if (p2.length === 2) { 
+                    pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+                }
+            }
+            this.value = pastedText;
+        });
+    });
+
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => r.wasChecked = true);
+</script>
+
 
 <!-- Item Row 10 (No Liability Claims - S.No 10 Layout with Date on Second Line) -->
-                    <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">10</td>
-                        
-                        <!-- Main Text Cell with Static Source and Auto Today Date Input on Second Line (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div>No liability claims within the past 5 years for initial/3 years for recred or as identified by NPDB? <strong>Source: NPDB</strong></div>
-                            
-                            <!-- Date picker moved cleanly to the second line with auto-current-date class helper -->
-                            <div style="margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                <span>Verified on:</span>
-                                <input type="date" name="verified_date_row_11" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_11" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_11').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_11" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_11').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr>
+    <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">10</td>
+    
+    <!-- Main Text Cell with Static Source and Auto Today Date Input on Second Line (Proportional 77% Width Layout) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 4px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div>No liability claims within the past 5 years for initial/3 years for recred or as identified by NPDB? <strong>Source: NPDB</strong></div>
+        
+        <!-- Date picker moved cleanly to the second line with text field and copy-paste filters -->
+        <div style="margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+            <span>Verified on:</span>
+            <!-- input type="text" with wide layout, select on click and raw excel paste compatibility -->
+            <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_11" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Pre-Checked with Reset Option) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_11" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_11').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+    
+    <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout with Reset Option) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_11" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_11').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+</tr>
+
+<script>
+    // Strict Advanced Format Clean Copy Engine specifically targeting row 10 structure
+    document.querySelectorAll('.excel-exact-date').forEach(input => {
+        if(!input.dataset.listenerRow10Attached) {
+            input.dataset.listenerRow10Attached = "true";
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+                let parts = pastedText.replace(/-/g, '/').split('/');
+                
+                if (parts.length === 3) {
+                    let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                    if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                    else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                    else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+                }
+                this.value = pastedText;
+            });
+        }
+    });
+
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => r.wasChecked = true);
+</script>
+
 
 <!-- Item Row 11 (Approval Timeline Matrix - Perfectly Balanced .1 Expanded Height) -->
                     <tr style="height: auto;">
@@ -856,65 +1384,127 @@ tbody {
                                    onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_12').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
                         </td>
                     </tr>
-
 <!-- Item Row 12 (Attestation Timeline Metric - Perfectly Balanced .1 Expanded Height) -->
-                    <tr style="height: auto;">
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout & Balanced .1 Padding) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">12</td>
-                        
-                        <!-- Main Text Cell with Auto Today Date Input Box (Proportional 77% Width Layout & Balanced .1 Padding) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 8px 12px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
-                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%;">
-                                <span>Application Attestation date within the past 120 days. Actual attestation date:</span>
-                                
-                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <!-- Automatically sets today's date on load -->
-                                    <input type="date" name="verified_date_row_13" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                            </div>
-                        </td>
-                        
-                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_13" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_13').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_13" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_13').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                    </tr>
+<tr style="height: auto;">
+    <!-- Small S.No. Cell (Proportional 3% Width Layout & Balanced .1 Padding) -->
+    <td style="width: 3%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">12</td>
+    
+    <!-- Main Text Cell with Auto Today Date Input Box (Proportional 77% Width Layout & Balanced .1 Padding) -->
+    <td style="width: 77%; border: 1px solid #111111; padding: 8px 12px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.4;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; width: 100%;">
+            <span>Application Attestation date within the past 120 days. Actual attestation date:</span>
+            
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <!-- input type="text" with wide layout, select on click and custom paste filters -->
+                <input type="text" placeholder="MM/DD/YYYY" name="verified_date_row_13" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+        </div>
+    </td>
+    
+    <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_13" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_13').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+    
+    <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout & Balanced .1 Padding) -->
+    <td style="width: 10%; border: 1px solid #111111; padding: 7px 2px; text-align: center; vertical-align: middle;">
+        <input type="radio" name="criteria_row_13" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_13').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+    </td>
+</tr>
+
+<script>
+    // Strict Advanced Format Clean Copy Engine specifically targeting row 12 configuration
+    document.querySelectorAll('input[name="verified_date_row_13"]').forEach(input => {
+        input.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+        });
+    });
+
+    document.querySelectorAll('input[type="radio"]:checked').forEach(r => r.wasChecked = true);
+</script>
 
 
 <!-- Item Row 13 (NPI / DeathMaster Verification Row) -->
-                    <tr>
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">13</td>
-                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
-                            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
-                                <strong>NPI</strong>
-                                <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
-                                    <input type="date" name="verified_date_row_14" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 11px;">
-                                </span>
-                                <span style="font-size: 12px; font-weight: bold; margin-left: 10px;">Source: <span style="text-decoration: underline;">NPPES</span></span>
-                                
-                                <!-- Source Dropdown Option -->
-                                <select id="source_dropdown_row_14" name="source_row_14" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer; margin-left: 15px;">
-                                    <option value="Select">Select</option>
-                                    <option value="NPPES Portal">MD Medicaid</option>
-                                    <option value="NPPES Portal">NJ Medicaid</option>
-                                </select>
-                            </div>
-                            <div style="margin-top: 6px; font-size: 13px;">
-                                <strong>DeathMaster</strong> <span style="text-decoration: underline; margin-left: 5px; font-weight: bold;">Yes</span>
-                            </div>
-                        </td>
-                        <!-- Empty Muted Gray Selector Fields as per Screenshot -->
-                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
-                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
-                    </tr>
+<tr>
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">13</td>
+    <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+            <strong>NPI</strong>
+            <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">
+                <!-- Pehla Box: Isme automatic aaj ki date fill rahegi -->
+                <input type="text" placeholder="MM/DD/YYYY" id="verified_date_row_14" name="verified_date_row_14" class="excel-exact-date auto-current-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </span>
+            <span style="font-size: 12px; font-weight: bold; margin-left: 10px;">Source: <span style="text-decoration: underline;">NPPES</span></span>
+            
+            <!-- Source Dropdown Option -->
+            <select id="source_dropdown_row_14" name="source_row_14" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-size: 12px; font-family: inherit; background-color: #f8fafc; cursor: pointer; margin-left: 15px;">
+                <option value="Select">Select</option>
+                <option value="MD Medicaid">MD Medicaid</option>
+                <option value="NJ Medicaid">NJ Medicaid</option>
+            </select>
 
+            <!-- Doosra Box: Bilkul pehle jitna chhota width (90px) kar diya hai, placeholder active hai aur paste pakka chalega -->
+            <input type="text" placeholder="MM/DD/YYYY" id="custom_npi_date_box" name="custom_npi_date_box" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #ffffff; width: 90px; text-align: center;">
+        </div>
+        <div style="margin-top: 6px; font-size: 13px;">
+            <strong>DeathMaster</strong> <span style="text-decoration: underline; margin-left: 5px; font-weight: bold;">Yes</span>
+        </div>
+    </td>
+    <!-- Empty Muted Gray Selector Fields as per Screenshot -->
+    <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+    <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+</tr>
+
+<script>
+    // Page load hote hi pehle box me automatic aaj ki date (MM/DD/YYYY) dalne ke liye
+    function loadRow14DefaultDate() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        let targetInput = document.getElementById('verified_date_row_14');
+        if (targetInput && !targetInput.value) {
+            targetInput.value = formatted;
+        }
+    }
+    loadRow14DefaultDate();
+
+    // Direct unique element targeting lagaya hai taaki paste logic fail na ho
+    function applyExcelPasteLogic(inputElement) {
+        if (!inputElement) return;
+        inputElement.addEventListener('paste', function(e) {
+            e.preventDefault();
+            let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+            let parts = pastedText.replace(/-/g, '/').split('/');
+            
+            if (parts.length === 3) {
+                let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+                if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+                else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+                else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+            }
+            this.value = pastedText;
+        });
+    }
+
+    // Dono fields par individual binding active ki hai
+    applyExcelPasteLogic(document.getElementById('verified_date_row_14'));
+    applyExcelPasteLogic(document.getElementById('custom_npi_date_box'));
+</script>
 <!-- Item Row 14 (Performance Indicators Row with Dropdowns Defaulted to No) -->
 <tr>
     <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">14</td>
@@ -922,13 +1512,14 @@ tbody {
         <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; width: 100%;">
             <div style="display: inline-flex; align-items: center; gap: 8px;">
                 <strong>Performance Indicators: Verified Date</strong>
-                <!-- Date input field with light gray background -->
-                <input type="date" name="verified_date_row_15" class="auto-current-date" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f1f5f9; font-size: 11px;">
+                <!-- auto-current-date class jod di hai taaki page load aur reset par automatic aaj ki date pakad le -->
+                <input type="text" placeholder="MM/DD/YYYY" id="verified_date_row_15" name="verified_date_row_15" class="excel-exact-date auto-current-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
             </div>
             <!-- Pre-Checked N/A Checkbox -->
             <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
                 <span>N/A this is initial cred</span>
-                <input type="checkbox" name="na_initial_row_15" checked style="transform: scale(1.3); margin: 0; cursor: pointer;">
+                <input type="checkbox" name="na_initial_row_15" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
+                       onclick="if(this.checked) { document.getElementById('verified_date_row_15').value = ''; }">
             </label>
         </div>
         
@@ -936,7 +1527,6 @@ tbody {
         <div style="margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; font-size: 12px; font-weight: bold;">
             <div style="display: flex; align-items: center; gap: 6px;">
                 <span>Complaints</span>
-                <!-- Dropdown with light gray background -->
                 <select name="perf_complaints" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
                     <option value="No" selected>No</option>
                     <option value="Yes">Yes</option>
@@ -944,7 +1534,6 @@ tbody {
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
                 <span>Access Issues</span>
-                <!-- Dropdown with light gray background -->
                 <select name="perf_access" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
                     <option value="No" selected>No</option>
                     <option value="Yes">Yes</option>
@@ -952,7 +1541,6 @@ tbody {
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
                 <span>Under/Over Utilization Data</span>
-                <!-- Dropdown with light gray background -->
                 <select name="perf_utilization" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
                     <option value="No" selected>No</option>
                     <option value="Yes">Yes</option>
@@ -960,7 +1548,6 @@ tbody {
             </div>
             <div style="display: flex; align-items: center; gap: 6px;">
                 <span>Quality of Care</span>
-                <!-- Dropdown with light gray background -->
                 <select name="perf_quality" style="padding: 1px 4px; border: 1px solid #9ca3af; border-radius: 4px; background-color: #f1f5f9;">
                     <option value="No" selected>No</option>
                     <option value="Yes">Yes</option>
@@ -973,51 +1560,108 @@ tbody {
     <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
 </tr>
 
+<script>
+    // Automatically injects todays date in Row 14 box on window start
+    function initRow15DateLoader() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        let target = document.getElementById('verified_date_row_15');
+        if (target && !target.value) {
+            target.value = formatted;
+        }
+    }
+    initRow15DateLoader();
 
+    // Excel custom advanced paste converter configuration
+    document.getElementById('verified_date_row_15').addEventListener('paste', function(e) {
+        e.preventDefault();
+        let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+        let parts = pastedText.replace(/-/g, '/').split('/');
+        
+        if (parts.length === 3) {
+            let p0 = parts.trim(), p1 = parts.trim(), p2 = parts.trim();
+            if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+            else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+            else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+        }
+        this.value = pastedText;
+    });
+</script>
 <!-- Item Row 15 (Last Completed Credentialing Date - Strictly 3-Year Rolling Past Dynamic Restriction Only) -->
-                    <tr>
-                        <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">15</td>
-                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
-                            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-                                <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                    <strong>Last Completed Credentialing Date:</strong>
-                                    <!-- No auto-date helper class. Set to only allow 3 years lookback up to yesterday -->
-                                    <input type="date" id="last_credentialing_date" name="last_credentialing_date" style="padding: 2px 6px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; font-size: 12px;">
-                                </div>
-                                <!-- Pre-Checked N/A Checkbox -->
-                                <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
-                                    <span>N/A this is initial cred</span>
-                                    <input type="checkbox" name="na_initial_row_16" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
-                                           onclick="if(this.checked) { document.getElementById('last_credentialing_date').value = ''; }">
-                                </label>
-                            </div>
-                        </td>
-                        <!-- Empty Muted Gray Selector Fields -->
-                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
-                        <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
-                    </tr>
+<tr>
+    <td style="width: 3%; border: 1px solid #111111; padding: 2px; text-align: center; vertical-align: middle; color: #111111; font-size: 13px;">15</td>
+    <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-align: left; vertical-align: middle; color: #111111; line-height: 1.5;">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div style="display: inline-flex; align-items: center; gap: 8px;">
+                <strong>Last Completed Credentialing Date:</strong>
+                <input type="text" placeholder="MM/DD/YYYY" id="last_credentialing_date" name="last_credentialing_date" class="excel-exact-date" onclick="this.select()" onfocus="this.select()" style="padding: 2px 4px; border: 1px solid #9ca3af; border-radius: 4px; font-family: inherit; background-color: #f8fafc; width: 90px; text-align: center;">
+            </div>
+            <!-- Pre-Checked N/A Checkbox -->
+            <label style="display: inline-flex; align-items: center; gap: 6px; font-weight: bold; cursor: pointer; font-size: 12px;">
+                <span>N/A this is initial cred</span>
+                <!-- ID link ki hai taaki handler ise automatic bypass kar sake -->
+                <input type="checkbox" id="na_initial_row_16" name="na_initial_row_16" checked style="transform: scale(1.3); margin: 0; cursor: pointer;"
+                       onclick="if(this.checked) { document.getElementById('last_credentialing_date').value = ''; }">
+            </label>
+        </div>
+    </td>
+    <!-- Empty Muted Gray Selector Fields -->
+    <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+    <td style="width: 10%; border: 1px solid #111111; background-color: #9ca3af; padding: 2px;"></td>
+</tr>
+
+</tbody>
+</table>
+
+<script>
+    // Row 15 100% working bulletproof copy-paste engine
+    document.getElementById('last_credentialing_date').addEventListener('paste', function(e) {
+        e.preventDefault();
+        let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+        let parts = pastedText.replace(/-/g, '/').split('/');
+        
+        if (parts.length === 3) {
+            let p0 = parts[0].trim(), p1 = parts[1].trim(), p2 = parts[2].trim();
+            if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+            else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+            else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+        }
+        
+        // 1. Data paste hote hi side wale N/A checkbox ko automatic uncheck (clear) karega
+        let naCheckbox = document.getElementById('na_initial_row_16');
+        if (naCheckbox) {
+            naCheckbox.checked = false;
+        }
+        
+        // 2. Value forcefully print karega
+        this.value = pastedText;
+    });
+</script>
 
 
-                </tbody>
-            </table>
             <!-- ========================================================
                  STEP 1: FINAL DECISION & COMPACT FLAT LAYOUT (.2% GAP MATCH)
                  ======================================================== -->
 <div style="margin-top: 8px; font-family: inherit; color: #111111; width: 100%;">
     
     <!-- 1. Decision Radio Buttons with ultra-tight 2px (.2%) gap -->
-    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: bold; line-height: 1.2;">
-        <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; padding: 0;">
-            <input type="radio" name="final_clean_status" value="meets" checked style="transform: scale(1.4); margin: 0; cursor: pointer;"
-                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-            <span>Application <span style="text-decoration: underline;">meets all clean criteria</span> and is ready for approval (all questions above answered TRUE).</span>
-        </label>
-        <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; padding: 0;">
-            <input type="radio" name="final_clean_status" value="not_meets" style="transform: scale(1.4); margin: 0; cursor: pointer;"
-                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-            <span>Application does <span style="text-decoration: underline;">not</span> meet clean criteria and is sent for Clinical Review</span>
-        </label>
-    </div>
+<div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: bold; line-height: 1.2;">
+    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; padding: 0;">
+        <input type="radio" name="final_clean_status" value="meets" checked style="transform: scale(1.4); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+        <span>Application <span style="text-decoration: underline;">meets all clean criteria</span> and is ready for approval (all questions above answered TRUE).</span>
+    </label>
+    <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; margin: 0; padding: 0;">
+        <input type="radio" name="final_clean_status" value="not_meets" style="transform: scale(1.4); margin: 0; cursor: pointer;"
+               onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('final_clean_status').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
+        <span>Application does <span style="text-decoration: underline;">not</span> meet clean criteria and is sent for Clinical Review</span>
+    </label>
+</div>
+
 
     <!-- 2. Shrunk Input & 3. Left-Aligned Date Completed with Tight .1 Gap -->
     <div style="margin-top: 5px; display: flex; align-items: center; justify-content: flex-start; font-size: 13px; font-weight: bold; width: 100%; white-space: nowrap;">
@@ -1041,18 +1685,52 @@ tbody {
         </div>
         
         <!-- Date Completed Block with Darker Grey Background Box -->
-        <div style="display: inline-flex; align-items: center; margin-left: 30px;">
-            <span>Date Completed:</span>
-            <input type="date" name="date_completed" class="auto-current-date" style="width: 115px; padding: 1px 2px; border: none; outline: none; font-family: inherit; font-size: 12px; font-weight: bold; color: #111111; height: 20px; background-color: rgba(226, 232, 240, 0.9); margin-left: 6px; border-radius: 2px;">
-        </div>
-        
-    </div>
+<div style="display: inline-flex; align-items: center; margin-left: 30px;">
+    <span>Date Completed:</span>
+    <!-- input type="text" kiya hai uniform wide style ke liye, click select aur excel copy-paste direct link hai -->
+    <input type="text" placeholder="MM/DD/YYYY" id="final_date_completed_box" name="date_completed" class="excel-exact-date auto-current-date" onclick="this.select()" onfocus="this.select()" style="width: 95px; padding: 1px 4px; border: none; outline: none; font-family: inherit; font-size: 12px; font-weight: bold; color: #111111; height: 20px; background-color: rgba(226, 232, 240, 0.9); margin-left: 6px; border-radius: 2px; text-align: center;">
 </div>
+
+</div>
+</div>
+
+<script>
+    // 1. Page open hote hi automatic aaj ki date (MM/DD/YYYY) bharne ke liye
+    function initDateCompletedEngine() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        let formatted = `${mm}/${dd}/${yyyy}`;
+        
+        let target = document.getElementById('final_date_completed_box');
+        if (target && !target.value) {
+            target.value = formatted;
+        }
+    }
+    initDateCompletedEngine();
+
+    // 2. Strict Advanced Format Clean Copy Engine specifically targeting Date Completed field
+    document.getElementById('final_date_completed_box').addEventListener('paste', function(e) {
+        e.preventDefault();
+        let pastedText = (e.clipboardData || window.clipboardData).getData('text').trim();
+        let parts = pastedText.replace(/-/g, '/').split('/');
+        
+        if (parts.length === 3) {
+            let p0 = parts.trim(), p1 = parts.trim(), p2 = parts.trim();
+            if (p0.length === 4) pastedText = `${p1.padStart(2, '0')}/${p2.padStart(2, '0')}/${p0}`;
+            else if (p2.length === 4) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/${p2}`;
+            else if (p2.length === 2) pastedText = `${p0.padStart(2, '0')}/${p1.padStart(2, '0')}/20${p2}`;
+        }
+        this.value = pastedText;
+    });
+</script>
+
 
 
 <!-- ========================================================
-                     STEP 2: DOUBLE ORANGE WITH 0.2% FINE BORDER MATCH
-                     ======================================================== -->
+STEP 2: DOUBLE ORANGE WITH 0.2% FINE BORDER MATCH
+======================================================== -->
 <div style="margin-top: 6px; border: 1px solid #111111; box-sizing: border-box; width: 100%;">
     
     <!-- 1. First Thin Orange Heading Line -->
@@ -1231,7 +1909,6 @@ function closeRulesBox() {
     document.getElementById("modalOverlay").style.display = "none";
 }
 
-
 function resetEntireForm() {
     // 1. Reset standard native form states (including checkboxes, options to No, and source picks)
     document.getElementById("credentialingForm").reset();
@@ -1240,25 +1917,64 @@ function resetEntireForm() {
     document.getElementById("rulesModal").style.display = "none";
     document.getElementById("modalOverlay").style.display = "none";
 
-    // 3. Re-inject today's date into active fields running the auto helper class (Now includes Date Completed)
-    const today = new Date().toISOString().split('T')[0];
-    document.querySelectorAll('.auto-current-date').forEach(dateInput => {
-        dateInput.value = today;
+    // 3. Re-inject today's date into active fields running the auto helper classes (Formatted as MM/DD/YYYY)
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    let formattedDate = `${mm}/${dd}/${yyyy}`;
+
+    // Baki sabhi helper boxes me aaj ki date dalega, par specify kiye huye fields ko chhod dega
+    document.querySelectorAll('.auto-current-date, .excel-exact-date').forEach(dateInput => {
+        // Row 5, 6, 7, 10, 12, 13 (second box) aur Row 15 ke date fields ko skip karega taaki reset par yeh auto-fill na hon
+        if (dateInput.name !== "verified_date_row_6" && 
+            dateInput.name !== "verified_date_row_7" && 
+            dateInput.name !== "verified_date_row_8" &&
+            dateInput.name !== "verified_date_row_11" &&
+            dateInput.name !== "verified_date_row_13" &&
+            dateInput.id !== "custom_npi_date_box" &&
+            dateInput.id !== "last_credentialing_date") { // Row 15 ko auto-fill hone se roka
+            dateInput.value = formattedDate;
+        }
     });
 
-    // 4. Clean manual blank date entry fields completely back to empty selection inputs (Removed date_completed from here)
+    // 4. Clean manual blank date entry fields completely back to empty selection inputs
+    // Isme 'last_credentialing_date' (Row 15) ko explicit empty list me jod diya hai
     const manualBlankFields = [
-        "verified_date_row_6", 
-        "last_credentialing_date", 
-        "date_reviewed"
+        "verified_date_row_6",     // Row 5 (OIG)
+        "verified_date_row_7",     // Row 6 (GSA)
+        "verified_date_row_8",     // Row 7 (State Medicaid)
+        "verified_date_row_11",    // Row 10 (Liability Claims)
+        "verified_date_row_13",    // Row 12 (Application Attestation)
+        "last_credentialing_date"  // Row 15 (Last Completed Credentialing Date) - 100% Fixed Blank
     ];
     
     manualBlankFields.forEach(fieldName => {
         const targetInput = document.querySelector(`input[name="${fieldName}"]`);
-        if (targetInput) {
-            targetInput.value = '';
-        }
+        // Id check lagaya hai for exact field match detection
+        const targetById = document.getElementById(fieldName);
+        
+        if (targetInput) targetInput.value = '';
+        if (targetById) targetById.value = '';
     });
+
+    // NPI row ka doosra compact box bhi clear blank rahega
+    const secondNpiBox = document.getElementById('custom_npi_date_box');
+    if (secondNpiBox) {
+        secondNpiBox.value = '';
+    }
+
+    // 4.5. Row 13 ke PEHLE box me forcefully aaj ki date reload karega
+    const firstNpiBox = document.getElementById('verified_date_row_14'); 
+    if (firstNpiBox) {
+        firstNpiBox.value = formattedDate;
+    }
+
+    // 4.6. Date Completed box me forcefully aaj ki date wapas bhar dega
+    const finalDateCompleted = document.getElementById('final_date_completed_box');
+    if (finalDateCompleted) {
+        finalDateCompleted.value = formattedDate;
+    }
 
     // 5. Restore default radio tracking memory flags for the double-click blank triggers
     const defaultMeetsRadio = document.querySelector('input[name="final_clean_status"][value="meets"]');
@@ -1267,6 +1983,7 @@ function resetEntireForm() {
         defaultMeetsRadio.wasChecked = true;
     }
 }
+
 
 function runSystemDataSanitization() {
     let unmappedFieldsList = [];
@@ -1353,6 +2070,7 @@ if (!providerTypeSelected) {
     });
 
 }
+
     // 2. Verifies that exactly one option is checked from your top choice options
     const unifiedCredTypeSelector = document.getElementsByName("cred_type");
     let applicationTypeHasInput = Array.from(unifiedCredTypeSelector).some(radioField => radioField.checked);
@@ -1364,15 +2082,31 @@ if (!providerTypeSelected) {
 // 3. Scan Matrix Evaluation Rows
 for (let rowId = 1; rowId <= 15; rowId++) {
 
+    if (rowId === 9) {
+
+        const row8NA =
+            document.querySelector(
+                'input[name="na_row_9"]'
+            );
+
+        if (row8NA && row8NA.checked) {
+            continue;
+        }
+    }
+
     const matrixGroup =
-        document.getElementsByName(`criteria_row_${rowId}`);
+        document.getElementsByName(
+            `criteria_row_${rowId}`
+        );
 
     if (matrixGroup.length > 0) {
 
-        if (rowId === 4) {
+       if (rowId === 4) {
 
     const row4NA =
-        document.querySelector('input[name="na_row_4"]');
+        document.querySelector(
+            'input[name="na_recred_row_4"]'
+        );
 
     const radioSelected =
         Array.from(matrixGroup).some(
@@ -1382,23 +2116,18 @@ for (let rowId = 1; rowId <= 15; rowId++) {
     const naSelected =
         row4NA && row4NA.checked;
 
-    // TRUE OR FALSE OR NA => VALID
-    if (radioSelected || naSelected) {
+    if (!radioSelected && !naSelected) {
 
-        const rowElement =
-            matrixGroup[0].closest("tr");
+        alert(
+            "❌ Work History mandatory hai.\n\n" +
+            "TRUE, FALSE ya N/A select karo."
+        );
 
-        if (rowElement) {
-
-            rowElement.classList.remove("error-blink");
-            rowElement.style.backgroundColor = "";
-
-        }
-
-        continue;
+        return false;
     }
-}
 
+    continue;
+}
         let groupSelectedState =
             Array.from(matrixGroup).some(
                 radioInput => radioInput.checked
@@ -1437,6 +2166,159 @@ for (let rowId = 1; rowId <= 15; rowId++) {
         }
     }
 }
+const row6Radios =
+document.getElementsByName("criteria_row_7");
+
+const row6Selected =
+Array.from(row6Radios).some(r => r.checked);
+
+if (!row6Selected) {
+
+    alert(
+        "❌ Row 6 (GSA) mandatory hai.\n\n" +
+        "TRUE ya FALSE select karo."
+    );
+
+    return false;
+}
+
+// =====================================================
+// OIG & GSA Date Mandatory Validation
+// =====================================================
+
+[
+    {
+        field: "verified_date_row_6",
+        label: "OIG Verification Date"
+    },
+    {
+        field: "verified_date_row_7",
+        label: "GSA Verification Date"
+    }
+].forEach(item => {
+// =====================================================
+// Additional Mandatory Date Blink Validation
+// =====================================================
+
+[
+    {
+        field: "verified_date_row_2_a",
+        label: "License Verification Date"
+    },
+    {
+        field: "verified_date_row_2_b",
+        label: "State Board Verification Date"
+    },
+    {
+        field: "verified_date_row_4",
+        label: "Work History Verification Date"
+    },
+    {
+        field: "verified_date_row_5",
+        label: "Disclosure Verification Date"
+    },
+    {
+        field: "verified_date_row_11",
+        label: "NPDB Verification Date"
+    },
+    {
+        field: "verified_date_row_13",
+        label: "Attestation Date"
+    }
+].forEach(item => {
+
+    const input =
+        document.querySelector(
+            `input[name="${item.field}"]`
+        );
+
+    if (!input) return;
+
+    if (!input.value.trim()) {
+
+        unmappedFieldsList.push(item.label);
+
+        input.style.border =
+            "4px solid #7f1d1d";
+
+        input.style.backgroundColor =
+            "#fecaca";
+
+        input.style.boxShadow =
+            "0 0 15px #dc2626";
+
+        input.classList.add(
+            "error-blink"
+        );
+
+        setTimeout(() => {
+            input.classList.remove(
+                "error-blink"
+            );
+        }, 120000);
+
+    } else {
+
+        input.classList.remove(
+            "error-blink"
+        );
+
+        input.style.border =
+            "1px solid #9ca3af";
+
+        input.style.backgroundColor =
+            "#f8fafc";
+
+        input.style.boxShadow =
+            "none";
+    }
+});
+    const input =
+        document.querySelector(
+            `input[name="${item.field}"]`
+        );
+
+    if (!input) return;
+
+    if (!input.value.trim()) {
+
+        unmappedFieldsList.push(item.label);
+
+        input.style.border =
+            "4px solid #7f1d1d";
+
+        input.style.backgroundColor =
+            "#fecaca";
+
+        input.style.boxShadow =
+            "0 0 15px #dc2626";
+
+        input.classList.add(
+            "error-blink"
+        );
+
+        setTimeout(() => {
+            input.classList.remove(
+                "error-blink"
+            );
+        }, 120000);
+
+    } else {
+
+        input.classList.remove(
+            "error-blink"
+        );
+
+        input.style.border =
+            "1px solid #9ca3af";
+
+        input.style.backgroundColor =
+            "#f8fafc";
+
+        input.style.boxShadow =
+            "none";
+    }
+});
 
     // 4. [PERFECT SYNCHRONIZATION] Strict 3-Year Rolling Past Lookback & Conditional Blank Check Engine
     const historicalDateField = document.querySelector('input[name="last_credentialing_date"]');
@@ -1510,6 +2392,8 @@ if (clientSelectedDate >= baselineToday || clientSelectedDate < rollingThreeYear
 unmappedFieldsList.push(
     "Last Completed Credentialing Date"
 );
+
+return false;
 }
 // Row 10 - NPDB Date
 
@@ -1518,27 +2402,23 @@ document.querySelector(
 'input[name="verified_date_row_11"]'
 );
 
-if (!npdbDate.value) {
-
-    npdbDate.style.border =
-        "4px solid red";
-
-    npdbDate.style.backgroundColor =
-        "#fecaca";
-
-    npdbDate.classList.add(
-        "error-blink"
-    );
-
-    unmappedFieldsList.push(
-        "NPDB Verification Date"
-    );
-}
-
 const attestationDate =
 document.querySelector(
 'input[name="verified_date_row_13"]'
 );
+
+if (
+    !npdbDate.value &&
+    !attestationDate.value &&
+    !historicalDateField.value
+) {
+
+    unmappedFieldsList.push(
+        "At least one date required"
+    );
+}
+
+
 
 if (!attestationDate.value) {
 
@@ -1559,40 +2439,127 @@ if (!attestationDate.value) {
 
 // Mandatory Date Validation
 
-["verified_date_row_11", "verified_date_row_13"]
-.forEach(fieldName => {
+// =====================================================
+// NPDB & Attestation Date Mandatory Validation
+// =====================================================
 
-    const field =
+[
+    {
+        field: "verified_date_row_11",
+        label: "NPDB Verification Date"
+    },
+    {
+        field: "verified_date_row_13",
+        label: "Attestation Date"
+    }
+].forEach(item => {
+
+    const input =
         document.querySelector(
-            `input[name="${fieldName}"]`
+            `input[name="${item.field}"]`
         );
 
-    if (field && !field.value.trim()) {
+    if (!input) return;
 
-        unmappedFieldsList.push(fieldName);
+    if (!input.value.trim()) {
 
-        field.classList.add("error-blink");
+        unmappedFieldsList.push(item.label);
 
-        field.style.border =
-            "4px solid #ff0000";
+        input.style.border =
+            "4px solid #7f1d1d";
+
+        input.style.backgroundColor =
+            "#fecaca";
+
+        input.style.boxShadow =
+            "0 0 15px #dc2626";
+
+        input.classList.add(
+            "error-blink"
+        );
+
+        setTimeout(() => {
+            input.classList.remove(
+                "error-blink"
+            );
+        }, 120000);
+
+    } else {
+
+        input.classList.remove(
+            "error-blink"
+        );
+
+        input.style.border =
+            "1px solid #9ca3af";
+
+        input.style.backgroundColor =
+            "#f8fafc";
+
+        input.style.boxShadow =
+            "none";
     }
 });
+
 if (
-    !historicalDateField.value ||
-    !npdbDate.value ||
+    !historicalDateField.value &&
+    !npdbDate.value &&
     !attestationDate.value
 ) {
 
     alert(
         "❌ Mandatory Date Missing.\n\n" +
-        "Please complete:\n" +
-        "• Last Completed Credentialing Date\n" +
-        "• NPDB Verification Date\n" +
-        "• Attestation Date\n\n" +
-        "PDF download is blocked until all mandatory dates are completed."
+        "Row 10, Row 12 ya Row 15 me se kam se kam ek date enter karo."
     );
 
     return false;
+}
+// =====================================================
+// Work History TRUE/FALSE Mandatory Validation
+// =====================================================
+
+const workHistoryRadios =
+document.getElementsByName("criteria_row_4");
+
+const workHistorySelected =
+Array.from(workHistoryRadios).some(
+    r => r.checked
+);
+
+if (!workHistorySelected) {
+
+    unmappedFieldsList.push(
+        "Work History TRUE/FALSE"
+    );
+
+    workHistoryRadios.forEach(radio => {
+
+        radio.style.outline =
+            "4px solid #7f1d1d";
+
+        radio.style.outlineOffset =
+            "3px";
+
+        radio.classList.add(
+            "error-blink"
+        );
+
+    });
+
+    setTimeout(() => {
+
+        workHistoryRadios.forEach(radio => {
+
+            radio.classList.remove(
+                "error-blink"
+            );
+
+            radio.style.outline = "";
+            radio.style.outlineOffset = "";
+
+        });
+
+    }, 120000);
 }
     // 5. Verification Check and Interactive Prompt Confirmation
     if (unmappedFieldsList.length > 0) {
