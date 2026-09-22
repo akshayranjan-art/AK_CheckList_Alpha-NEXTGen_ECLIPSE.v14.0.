@@ -1504,6 +1504,36 @@ function handleRow8NA(checkbox) {
     // Dono fields par individual binding active ki hai
     applyExcelPasteLogic(document.getElementById('verified_date_row_14'));
     applyExcelPasteLogic(document.getElementById('custom_npi_date_box'));
+    document
+.getElementById("source_dropdown_row_14")
+.addEventListener("change", function () {
+
+    const dateBox =
+        document.getElementById(
+            "custom_npi_date_box"
+        );
+
+    if (this.value !== "Select") {
+
+        let today = new Date();
+        let dd = String(
+            today.getDate()
+        ).padStart(2, "0");
+
+        let mm = String(
+            today.getMonth() + 1
+        ).padStart(2, "0");
+
+        let yyyy =
+            today.getFullYear();
+
+        dateBox.value =
+            `${mm}/${dd}/${yyyy}`;
+    } else {
+
+        dateBox.value = "";
+    }
+});
 </script>
 <!-- Item Row 14 (Performance Indicators Row with Dropdowns Defaulted to No) -->
 <tr>
