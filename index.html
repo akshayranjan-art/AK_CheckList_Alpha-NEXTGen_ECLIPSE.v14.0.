@@ -3,431 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checklist</title>
-
+    <title>AK_AUDITRate_Alpha NEXTGen_ECLIPSE v5.0</title>
+    <title>Checklist Application</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <style>
-        /* CSS */
-    </style>
-</head>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 60px 0 0; background-color: #f3f4f6; color: #1f2937; }
+        @keyframes hard-error-blink {
+            0%, 100% { border-color: #7f1d1d; background-color: #fecaca; box-shadow: 0 0 10px #dc2626; }
+            50% { border-color: #ff0000; background-color: #ffffff; box-shadow: 0 0 20px #ff0000; }
+        }
+        .error-blink { animation: hard-error-blink 0.25s infinite; }
+        body, .form-container, table, thead, tbody { background: #ffffff !important; }
+        .action-control-bar { padding: 12px 20px; background-color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 15px; border-bottom: 2px solid #e5e7eb; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; }
+        .btn-rules, .btn-download, .btn-reset { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 6px 16px; 
+            font-weight: 700; color: #ffffff; font-size: 14px; letter-spacing: 0.5px; border-radius: 50px; cursor: pointer; 
+            font-family: sans-serif; border: 1.5px solid rgba(255, 255, 255, 0.6); backdrop-filter: blur(8px) saturate(140%); 
+            -webkit-backdrop-filter: blur(8px) saturate(140%); transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1); 
+            position: relative; overflow: hidden; 
+        }
+/* Glass Inner Rim Effect */
+.btn-rules::before, .btn-download::before, .btn-reset::before { content: ""; position: absolute; top: 2px; left: 8px; right: 4px; height: 42%; background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.1) 100%); border-radius: 40px 40px 15px 15px; pointer-events: none; }
 
-    <style>
-        /* System Interface Typography & Base Setup */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    padding-top: 60px;
-    background-color: #f3f4f6;
-    color: #1f2937;
-}
+/* 1. View Form Rules Button (Blue Liquid Glow) */
+.btn-rules { margin-left: 340px; background: linear-gradient(to bottom, rgba(56, 189, 248, 0.85) 0%, rgba(2, 132, 199, 0.75) 40%, rgba(3, 105, 161, 0.85) 100%); box-shadow: inset 0 3px 4px rgba(255, 255, 255, 0.75), inset 0 -4px 8px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(2, 132, 199, 0.25); }
+.btn-rules:hover { background: linear-gradient(to bottom, rgba(125, 211, 252, 0.9) 0%, rgba(14, 165, 239, 0.8) 40%, rgba(2, 132, 199, 0.9) 100%); box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.85), 0 12px 24px rgba(2, 132, 199, 0.4); border-color: rgba(255, 255, 255, 0.8); }
 
-/* ERROR BLINK EFFECT */
-@keyframes hard-error-blink {
-    0% {
-        border-color: #7f1d1d;
-        background-color: #fecaca;
-        box-shadow: 0 0 10px #dc2626;
-    }
-    50% {
-        border-color: #ff0000;
-        background-color: #ffffff;
-        box-shadow: 0 0 20px #ff0000;
-    }
-    100% {
-        border-color: #7f1d1d;
-        background-color: #fecaca;
-        box-shadow: 0 0 10px #dc2626;
-    }
-}
+/* 2. Download Checklist PDF Button (Green Liquid Glow) */
+.btn-download { margin-left: -15px; background: linear-gradient(to bottom, rgba(74, 222, 128, 0.85) 0%, rgba(22, 163, 74, 0.75) 40%, rgba(21, 128, 61, 0.85) 100%); box-shadow: inset 0 3px 4px rgba(255, 255, 255, 0.75), inset 0 -4px 8px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(22, 163, 74, 0.25); }
+.btn-download:hover { background: linear-gradient(to bottom, rgba(134, 239, 172, 0.9) 0%, rgba(34, 197, 94, 0.8) 40%, rgba(22, 163, 74, 0.9) 100%); box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.85), 0 12px 24px rgba(22, 163, 74, 0.4); border-color: rgba(255, 255, 255, 0.8); }
 
-.error-blink {
-    animation: hard-error-blink 0.25s infinite;
-}
+/* 3. Reset Button (Red Liquid Glow) */
+.btn-reset { margin-left: -2px; background: linear-gradient(to bottom, rgba(248, 113, 113, 0.85) 0%, rgba(220, 38, 38, 0.75) 40%, rgba(185, 28, 28, 0.85) 100%); box-shadow: inset 0 3px 4px rgba(255, 255, 255, 0.75), inset 0 -4px 8px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(220, 38, 38, 0.25); }
 
-
-/* PDF White Background Fix */
-body,
-.form-container,
-table,
-thead,
-tbody {
-    background: #ffffff !important;
-}
-        /* Top Interactive Toolbelt */
-  .action-control-bar {
-    padding: 12px 20px;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    border-bottom: 2px solid #e5e7eb;
-
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-}
-
-/* Base styles common for all liquid glass capsule buttons */
-.btn-rules, .btn-download, .btn-reset {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* Icon aur text ke bich ki jagah */
-    padding: 6px 16px;
-    font-weight: 700;
-    color: #ffffff;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    border-radius: 50px; /* Perfect round capsule shape */
-    cursor: pointer;
-    font-family: sans-serif;
-    
-    /* MODIFIED: Ek thin white crystal border lagayi hai jo kanch ki edges chamkanti hai */
-    border: 1.5px solid rgba(255, 255, 255, 0.6);
-    
-    /* ADDED: Piche ke background ko blur karne ke liye real glass filters */
-    backdrop-filter: blur(8px) saturate(140%);
-    -webkit-backdrop-filter: blur(8px) saturate(140%);
-    
-    /* Smooth 3D Press state transition */
-    transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    overflow: hidden; /* Glass reflection ko capsule ke andar rakhne ke liye */
-}
-
-/* Glass Inner Rim Effect using ::before pseudo-element */
-.btn-rules::before, .btn-download::before, .btn-reset::before {
-    content: "";
-    position: absolute;
-    top: 2px;
-    left: 8px;
-    right: 4px;
-    height: 42%; /* Sirf top half me white shiny reflection dene ke liye */
-    
-    /* MODIFIED: Iski opacity aur dynamic range badha di taaki kanch ki specular highlight chamke */
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.1) 100%);
-    border-radius: 40px 40px 15px 15px;
-    pointer-events: none;
-}
-
-/* 1. View Form Rules Button (Solid Blue Liquid Glow) */
-.btn-rules {
-    margin-left: 340px; /* Value adjust kar sakte hain */
-    
-    /* MODIFIED: Base background ko halka sa semi-transparent kiya kanch ke texture ke liye */
-    background: linear-gradient(to bottom, rgba(56, 189, 248, 0.85) 0%, rgba(2, 132, 199, 0.75) 40%, rgba(3, 105, 161, 0.85) 100%);
-    
-    /* MODIFIED: Inset shadows ko thoda deep kiya taaki liquid roundness zyada dikhe */
-    box-shadow: 
-        inset 0 3px 4px rgba(255, 255, 255, 0.75), 
-        inset 0 -4px 8px rgba(0, 0, 0, 0.3),
-        0 8px 20px rgba(2, 132, 199, 0.25);
-}
-
-.btn-rules:hover {
-    background: linear-gradient(to bottom, rgba(125, 211, 252, 0.9) 0%, rgba(14, 165, 239, 0.8) 40%, rgba(2, 132, 199, 0.9) 100%);
-    box-shadow: 
-        inset 0 4px 6px rgba(255, 255, 255, 0.85), 
-        0 12px 24px rgba(2, 132, 199, 0.4);
-    border-color: rgba(255, 255, 255, 0.8);
-}
-
-/* 2. Download Checklist PDF Button (Solid Green Liquid Glow) */
-.btn-download {
-    margin-left: -15px; /* Value adjust kar sakte hain */
-    
-    /* MODIFIED: Base background semi-transparent */
-    background: linear-gradient(to bottom, rgba(74, 222, 128, 0.85) 0%, rgba(22, 163, 74, 0.75) 40%, rgba(21, 128, 61, 0.85) 100%);
-    
-    /* MODIFIED: Inset shadows enhanced */
-    box-shadow: 
-        inset 0 3px 4px rgba(255, 255, 255, 0.75), 
-        inset 0 -4px 8px rgba(0, 0, 0, 0.3),
-        0 8px 20px rgba(22, 163, 74, 0.25);
-}
-
-.btn-download:hover {
-    background: linear-gradient(to bottom, rgba(134, 239, 172, 0.9) 0%, rgba(34, 197, 94, 0.8) 40%, rgba(22, 163, 74, 0.9) 100%);
-    box-shadow: 
-        inset 0 4px 6px rgba(255, 255, 255, 0.85), 
-        0 12px 24px rgba(22, 163, 74, 0.4);
-    border-color: rgba(255, 255, 255, 0.8);
-}
-
-/* 3. Reset Button (Solid Red Liquid Glow) */
-.btn-reset {
-    margin-left: -2px;
-    
-    /* MODIFIED: Base background semi-transparent */
-    background: linear-gradient(to bottom, rgba(248, 113, 113, 0.85) 0%, rgba(220, 38, 38, 0.75) 40%, rgba(185, 28, 28, 0.85) 100%);
-    
-    /* MODIFIED: Inset shadows enhanced */
-    box-shadow: 
-        inset 0 3px 4px rgba(255, 255, 255, 0.75), 
-        inset 0 -4px 8px rgba(0, 0, 0, 0.3),
-        0 8px 20px rgba(220, 38, 38, 0.25);
-}
-
-.btn-reset:hover {
-    background: linear-gradient(to bottom, rgba(252, 165, 165, 0.9) 0%, rgba(239, 68, 68, 0.8) 40%, rgba(220, 38, 38, 0.9) 100%);
-    box-shadow: 
-        inset 0 4px 6px rgba(255, 255, 255, 0.85), 
-        0 12px 24px rgba(220, 38, 38, 0.4);
-    border-color: rgba(255, 255, 255, 0.8);
-}
-
+.btn-reset:hover { background: linear-gradient(to bottom, rgba(252, 165, 165, 0.9) 0%, rgba(239, 68, 68, 0.8) 40%, rgba(220, 38, 38, 0.9) 100%); box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.85), 0 12px 24px rgba(220, 38, 38, 0.4); border-color: rgba(255, 255, 255, 0.8); }
 /* Click / Active effect for 3D physics */
-.btn-rules:active, .btn-download:active, .btn-reset:active {
-    transform: scale(0.96); /* Dabne par real button feel dega */
-    box-shadow: 
-        inset 0 5px 8px rgba(0, 0, 0, 0.45),
-        0 3px 8px rgba(0, 0, 0, 0.15);
-}
-
-.header-banner {
-    background-color: #f97316;
-    color: white;
-    text-align: center;
-    padding: 6px;
-    font-weight: normal;
-    font-size: 15px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-}
-        .criteria-banner {
-            background-color: #fb923c;
-            color: white;
-            text-align: center;
-            padding: 6px;
-            font-weight: bold;
-            font-size: 16px;
-            margin-top: 15px;
-        }
-
-        /* Metadata Information Blocks */
-        .meta-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
-        }
-        .meta-field {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .meta-field label {
-            font-weight: bold;
-            min-width: 120px;
-        }
-        .meta-field input[type="text"] {
-            flex-grow: 1;
-            padding: 6px;
-            border: 1px solid #9ca3af;
-            border-radius: 4px;
-        }
-
-       /* Matrix Checklist Table Design */
-.checklist-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    border: 2px solid #000000; /* Crisp and deep black outer boundary */
-}
-
-.checklist-table th, .checklist-table td {
-    border: 1px solid #000000; /* Pure solid black internal grid lines for high contrast */
-    padding: 10px;
-    text-align: left;
-    font-size: 13px;
-    vertical-align: middle;
-    color: #000000; /* High contrast body text */
-}
-
-.checklist-table th {
-    background-color: #e5e7eb; /* Balanced header background for a premium executive print look */
-    font-weight: bold;
-    color: #000000; /* Distinct bold black heading text */
-}
-
-.center-align {
-    text-align: center;
-}
-
-.input-subtext {
-    color: #374151; /* Darkened subtext ensuring readable print quality in PDF */
-    font-size: 11px;
-    margin-top: 4px;
-}
-
-
-        /* Hidden Verification Windows */
-        .modal-box {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 30px;
-            border: 1px solid #9ca3af;
-            z-index: 101;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
-            max-width: 500px;
-            width: 90%;
-            border-radius: 8px;
-        }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-            z-index: 100;
-        }
-
-        /* Optimization rules during PDF output generation */
-        @media print {
-            .action-control-bar {
-                display: none !important;
-            }
-            body {
-                background-color: #ffffff;
-            }
-            .form-container {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-                margin: 0;
-            }
-        }
-    </style>
+.btn-rules:active, .btn-download:active, .btn-reset:active { transform: scale(0.96); box-shadow: inset 0 5px 8px rgba(0, 0, 0, 0.45), 0 3px 8px rgba(0, 0, 0, 0.15); }
+.header-banner { background-color: #f97316; color: white; text-align: center; padding: 6px; font-weight: normal; font-size: 15px; text-transform: uppercase; letter-spacing: 0.3px; }
+.criteria-banner { background-color: #fb923c; color: white; text-align: center; padding: 6px; font-weight: bold; font-size: 16px; margin-top: 15px; }
+/* Metadata Information Blocks */
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0; }
+.meta-field { display: flex; align-items: center; gap: 10px; }
+.meta-field label { font-weight: bold; min-width: 120px; }
+.meta-field input[type="text"] { flex-grow: 1; padding: 6px; border: 1px solid #9ca3af; border-radius: 4px; }
+/* Matrix Checklist Table Design */
+.checklist-table { width: 100%; border-collapse: collapse; margin-top: 15px; border: 2px solid #000000; }
+.checklist-table th, .checklist-table td { border: 1px solid #000000; padding: 10px; text-align: left; font-size: 13px; vertical-align: middle; color: #000000; }
+.checklist-table th { background-color: #e5e7eb; font-weight: bold; color: #000000; }
+.center-align { text-align: center; }
+.input-subtext { color: #374151; font-size: 11px; margin-top: 4px; }
+/* Hidden Verification Windows */
+.modal-box { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border: 1px solid #9ca3af; z-index: 101; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); max-width: 500px; width: 90%; border-radius: 8px; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 100; }
+/* Optimization rules during PDF output generation */
+@media print { .action-control-bar { display: none !important; } body { background-color: #ffffff; } .form-container { box-shadow: none; border: none; padding: 0; margin: 0; } }
+</style>
 </head>
 <body>
 
-    <!-- 1. TOP INTERACTIVE TOOLBELT -->
-    <div class="action-control-bar">
-
-    <div style="width:220px;">
-        <button type="button" id="btnResetForm" class="btn-reset">
-            🔄 Reset
-        </button>
-    </div>
-
-    <div style="display:flex; gap:20px;">
-        <button type="button" id="btnShowRules" class="btn-rules">
-            🔍 View Form Rules
-        </button>
-
-        <button type="button" id="btnDownloadPDF" class="btn-download">
-            📥 Download Checklist PDF
-        </button>
-    </div>
-
+<!-- 1. TOP INTERACTIVE TOOLBELT -->
+<div class="action-control-bar">
+    <div style="width:220px;"><button type="button" id="btnResetForm" class="btn-reset">🔄 Reset</button></div>
+    <div style="display:flex; gap:20px;"><button type="button" id="btnShowRules" class="btn-rules">🔍 View Form Rules</button><button type="button" id="btnDownloadPDF" class="btn-download">📥 Download Checklist PDF</button></div>
 </div>
 
-       <!-- 2. MAIN CREDENTIALING CHECKLIST SHEET -->
-    <div class="form-container" style="max-width: 1000px; margin: 10px auto; background-color: #ffffff; padding: 15px 30px 20px 30px; border: 1px solid #d1d5db; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-        <form id="credentialingForm">
-            
-            <div class="header-banner">Credentialing Application Checklist (Optum PSV)</div>
-            
-            <!-- Adjusted margin-top to a micro 2px to shift the inputs down slightly -->
-            <div class="meta-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 2px; margin-bottom: 0px;">
-                <div class="meta-field" style="display: flex; align-items: center; gap: 10px;">
-                    <label style="font-weight: bold; min-width: 120px;">Provider Name:</label>
-                    <input type="text" name="provider_name" placeholder="Enter Full Name" style="flex-grow: 1; padding: 6px; border: 1px solid #9ca3af; border-radius: 4px;">
+<!-- 2. MAIN CREDENTIALING CHECKLIST SHEET -->
+<div class="form-container" style="max-width: 1000px; margin: 10px auto; background:#fff; padding:15px 30px 20px; border:1px solid #d1d5db; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+    <form id="credentialingForm">
+        <div class="header-banner">Credentialing Application Checklist (Optum PSV)</div>
+        <div class="meta-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin:2px 0 0;">
+            <div class="meta-field" style="display:flex; align-items:center; gap:10px;"><label style="font-weight:bold; min-width:120px;">Provider Name:</label><input type="text" name="provider_name" placeholder="Enter Full Name" style="flex-grow:1; padding:6px; border:1px solid #9ca3af; border-radius:4px;"></div>
+            <div class="meta-field" style="display:flex; align-items:center; gap:10px;"><label style="font-weight:bold; min-width:120px;">Provider ID:</label><input type="text" name="provider_id" placeholder="Enter ID Code" style="flex-grow:1; padding:6px; border:1px solid #9ca3af; border-radius:4px;"></div>
+        </div>
+            <!-- Definitive Micro Alignment -->
+            <div style="margin:0; padding:7px 0 4px; display:flex; gap:60px; font-weight:bold; font-size:15px; align-items:center; font-family:inherit; width:100%;">
+                <div style="display:flex; gap:35px; align-items:center;">
+                    <label style="display:inline-flex; align-items:center; gap:12px; cursor:pointer;"><span>Initial Cred</span><input type="radio" name="cred_type" value="Initial" style="transform:scale(2.2); margin:0; cursor:pointer;"></label>
+                    <label style="display:inline-flex; align-items:center; gap:12px; cursor:pointer;"><span>Recred</span><input type="radio" name="cred_type" value="Recred" checked style="transform:scale(2.2); margin:0; cursor:pointer;"></label>
                 </div>
-                <div class="meta-field" style="display: flex; align-items: center; gap: 10px;">
-                    <label style="font-weight: bold; min-width: 120px;">Provider ID:</label>
-                    <input type="text" name="provider_id" placeholder="Enter ID Code" style="flex-grow: 1; padding: 6px; border: 1px solid #9ca3af; border-radius: 4px;">
+                <div style="display:flex; gap:35px; align-items:center; margin-left:235px;">
+                    <label style="display:inline-flex; align-items:center; gap:12px; cursor:pointer;"><span>DC</span><input type="radio" name="provider_type" value="DC" style="transform:scale(2.2); margin:0; cursor:pointer;"></label>
+                    <label style="display:inline-flex; align-items:center; gap:12px; cursor:pointer;"><span>TH</span><input type="radio" name="provider_type" value="TH" style="transform:scale(2.2); margin:0; cursor:pointer;"></label>
+                    <label style="display:inline-flex; align-items:center; gap:12px; cursor:pointer;"><span>CAM</span><input type="radio" name="provider_type" value="CAM" style="transform:scale(2.2); margin:0; cursor:pointer;"></label>
                 </div>
             </div>
 
-
-            <!-- Definitive Micro Alignment: Set padding-top to 7px for perfect balance -->
-            <div style="margin: 0; padding: 7px 0 4px 0; display: flex; gap: 60px; font-weight: bold; font-size: 15px; align-items: center; font-family: inherit; width: 100%;">
-                
-                <!-- Group A: First 2 Elements -->
-                <div style="display: flex; gap: 35px; align-items: center;">
-                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
-                        <span>Initial Cred</span>
-                        <input type="radio" name="cred_type" value="Initial" style="transform: scale(2.2); margin: 0; cursor: pointer;">
-                    </label>
-                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
-                        <span>Recred</span>
-                        <input type="radio" name="cred_type" value="Recred" checked style="transform: scale(2.2); margin: 0; cursor: pointer;">
-                    </label>
-                </div>
-
-                <!-- Group B: DC / TH / CAM -->
-                <div style="display: flex; gap: 35px; align-items: center; margin-left: 235px;">
-                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
-                        <span>DC</span>
-                        <input type="radio" name="provider_type" value="DC" style="transform: scale(2.2); margin: 0; cursor: pointer;">
-                    </label>
-
-                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
-                        <span>TH</span>
-                        <input type="radio" name="provider_type" value="TH" style="transform: scale(2.2); margin: 0; cursor: pointer;">
-                    </label>
-
-                    <label style="display: inline-flex; align-items: center; gap: 12px; cursor: pointer;">
-                        <span>CAM</span>
-                        <input type="radio" name="provider_type" value="CAM" style="transform: scale(2.2); margin: 0; cursor: pointer;">
-                    </label>
-                </div>
-                
-            </div>
-
-            <!-- Shrunk banner: internal padding reduced from 4px to 2px, font size shrunk to 14px -->
-            <div class="criteria-banner" style="padding: 2px; margin-top: 3px; text-align: center; background-color: #fb923c; color: white; font-weight: bold; font-size: 14px; border: 0.5px solid #fb923c;">Clean Application Criteria</div>
-            <table class="checklist-table" style="width: 100%; border-collapse: collapse; margin-top: 4px; table-layout: fixed;">
+            <!-- Shrunk banner & Table Structure -->
+            <div class="criteria-banner" style="padding:2px; margin-top:3px; text-align:center; background-color:#fb923c; color:white; font-weight:bold; font-size:14px; border:0.5px solid #fb923c;">Clean Application Criteria</div>
+            <table class="checklist-table" style="width:100%; border-collapse:collapse; margin-top:4px; table-layout:fixed;">
                 <thead>
-                    <tr style="background-color: #f8fafc; height: auto;">
-                        <th style="width: 3%; border: 0.5px solid #111111; padding: 2px 4px; text-align: center; font-size: 13px; font-weight: normal; color: #475569; line-height: 1.2;">S.No.</th>
-                        <th style="width: 87%; border: 0.5px solid #111111; padding: 2px 4px; text-align: left; font-size: 13px; font-weight: bold; color: #1e293b; line-height: 1.2;">List</th>
-                        <th style="width: 5%; border: 0.5px solid #111111; padding: 2px 4px; text-align: center; font-size: 12px; font-weight: 900; letter-spacing: 0.3px; color: #0f172a; line-height: 1.2;">TRUE</th>
-                        <th style="width: 5%; border: 0.5px solid #111111; padding: 2px 4px; text-align: center; font-size: 12px; font-weight: 900; letter-spacing: 0.3px; color: #0f172a; line-height: 1.2;">FALSE</th>
+                    <tr style="background-color:#f8fafc; height:auto;">
+                        <th style="width:3%; border:0.5px solid #111111; padding:2px 4px; text-align:center; font-size:13px; font-weight:normal; color:#475569; line-height:1.2;">S.No.</th>
+                        <th style="width:87%; border:0.5px solid #111111; padding:2px 4px; text-align:left; font-size:13px; font-weight:bold; color:#1e293b; line-height:1.2;">List</th>
+                        <th style="width:5%; border:0.5px solid #111111; padding:2px 4px; text-align:center; font-size:12px; font-weight:900; letter-spacing:0.3px; color:#0f172a; line-height:1.2;">TRUE</th>
+                        <th style="width:5%; border:0.5px solid #111111; padding:2px 4px; text-align:center; font-size:12px; font-weight:900; letter-spacing:0.3px; color:#0f172a; line-height:1.2;">FALSE</th>
                     </tr>
                 </thead>
                 <tbody>
 
- <!-- Item Row 1 -->
-                               <!-- Item Row 1 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
+<!-- Item Row 1 -->
                     <tr>
-                        <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
-                        <td style="width: 3%; border: 1px solid #111111; padding: 4px; font-size: 13px; text-align: center; vertical-align: middle; color: #111111;">1</td>
-                        
-                        <!-- Main Text Cell with Integrated Elements (Proportional 77% Width Layout) -->
-                        <td style="width: 77%; border: 1px solid #111111; padding: 6px 12px; font-size: 13px; text-transform: none; text-align: left; vertical-align: middle; line-height: 1.3; color: #111111;">
+                        <td style="width:3%; border:1px solid #111111; padding:4px; font-size:13px; text-align:center; vertical-align:middle; color:#111111;">1</td>
+                        <td style="width:77%; border:1px solid #111111; padding:6px 12px; font-size:13px; text-align:left; vertical-align:middle; line-height:1.3; color:#111111;">
                             No history of termination from Optum other than for failure to recred/moved without notifying?
-                            
-                            <!-- Previously Reviewed Selector Control Grid Alignment -->
-                            <div style="margin-top: 4px; text-align: center; font-weight: bold; font-size: 11px; color: #111111; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                <span>Previously Reviewed</span>
-                                <input type="checkbox" name="previous_reviewed_1" style="transform: scale(1.1); margin: 0; cursor: pointer;">
-                            </div>
+                            <div style="margin-top:4px; text-align:center; font-weight:bold; font-size:11px; color:#111111; display:flex; align-items:center; justify-content:center; gap:6px;"><span>Previously Reviewed</span><input type="checkbox" name="previous_reviewed_1" style="transform:scale(1.1); margin:0; cursor:pointer;"></div>
                         </td>
-                        
-                        <!-- TRUE Matrix Selector Field Bracket (Proportional 10% Width Layout & Default Checked) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_1" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_1').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
-                        
-                        <!-- FALSE Matrix Selector Field Bracket (Proportional 10% Width Layout) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 4px; text-align: center; vertical-align: middle;">
-                            <input type="radio" name="criteria_row_1" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                   onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_1').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                        </td>
+                        <td style="width:10%; border:1px solid #111111; padding:4px; text-align:center; vertical-align:middle;"><input type="radio" name="criteria_row_1" value="TRUE" checked style="transform:scale(2.2); margin:0; cursor:pointer;" onclick="if(this.wasChecked){this.checked=false;this.wasChecked=false;}else{document.getElementsByName('criteria_row_1').forEach(r=>r.wasChecked=false);this.wasChecked=true;}"></td>
+                        <td style="width:10%; border:1px solid #111111; padding:4px; text-align:center; vertical-align:middle;"><input type="radio" name="criteria_row_1" value="FALSE" style="transform:scale(2.2); margin:0; cursor:pointer;" onclick="if(this.wasChecked){this.checked=false;this.wasChecked=false;}else{document.getElementsByName('criteria_row_1').forEach(r=>r.wasChecked=false);this.wasChecked=true;}"></td>
                     </tr>
 
  <!-- Item Row 2 -->
@@ -495,35 +177,19 @@ tbody {
     });
 </script>
 
-                        
-                        <!-- TRUE Matrix Selector Fields (Proportional 10% Width Layout Stacked without Divider Line) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
-                            <!-- Top Selection Area (criteria_row_2) -->
-                            <div style="height: 32px; display: flex; align-items: center; justify-content: center;">
-                                <input type="radio" name="criteria_row_2" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_2').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                            </div>
-                            <!-- Bottom Selection Area (criteria_row_3) -->
-                            <div style="height: 32px; margin-top: 8px; display: flex; align-items: center; justify-content: center;">
-                                <input type="radio" name="criteria_row_3" value="TRUE" checked style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_3').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                            </div>
+                        <!-- TRUE Matrix Selector Fields (Stacked without Divider Line) -->
+                        <td style="width:10%; border:1px solid #111111; padding:6px 0; text-align:center; vertical-align:middle;">
+                            <div style="height:32px; display:flex; align-items:center; justify-content:center;"><input type="radio" name="criteria_row_2" value="TRUE" checked style="transform:scale(2.2); margin:0; cursor:pointer;" onclick="if(this.wasChecked){this.checked=false;this.wasChecked=false;}else{document.getElementsByName('criteria_row_2').forEach(r=>r.wasChecked=false);this.wasChecked=true;}"></div>
+                            <div style="height:32px; margin-top:8px; display:flex; align-items:center; justify-content:center;"><input type="radio" name="criteria_row_3" value="TRUE" checked style="transform:scale(2.2); margin:0; cursor:pointer;" onclick="if(this.wasChecked){this.checked=false;this.wasChecked=false;}else{document.getElementsByName('criteria_row_3').forEach(r=>r.wasChecked=false);this.wasChecked=true;}"></div>
                         </td>
                         
-                        <!-- FALSE Matrix Selector Fields (Proportional 10% Width Layout Stacked without Divider Line) -->
-                        <td style="width: 10%; border: 1px solid #111111; padding: 6px 0; text-align: center; vertical-align: middle;">
-                            <!-- Top Selection Area (criteria_row_2) -->
-                            <div style="height: 32px; display: flex; align-items: center; justify-content: center;">
-                                <input type="radio" name="criteria_row_2" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_2').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                            </div>
-                            <!-- Bottom Selection Area (criteria_row_3) -->
-                            <div style="height: 32px; margin-top: 8px; display: flex; align-items: center; justify-content: center;">
-                                <input type="radio" name="criteria_row_3" value="FALSE" style="transform: scale(2.2); margin: 0; cursor: pointer;"
-                                       onclick="if(this.wasChecked) { this.checked = false; this.wasChecked = false; } else { document.getElementsByName('criteria_row_3').forEach(r => r.wasChecked = false); this.wasChecked = true; }">
-                            </div>
+                        <!-- FALSE Matrix Selector Fields (Stacked without Divider Line) -->
+                        <td style="width:10%; border:1px solid #111111; padding:6px 0; text-align:center; vertical-align:middle;">
+                            <div style="height:32px; display:flex; align-items:center; justify-content:center;"><input type="radio" name="criteria_row_2" value="FALSE" style="transform:scale(2.2); margin:0; cursor:pointer;" onclick="if(this.wasChecked){this.checked=false;this.wasChecked=false;}else{document.getElementsByName('criteria_row_2').forEach(r=>r.wasChecked=false);this.wasChecked=true;}"></div>
+                            <div style="height:32px; margin-top:8px; display:flex; align-items:center; justify-content:center;"><input type="radio" name="criteria_row_3" value="FALSE" style="transform:scale(2.2); margin:0; cursor:pointer;" onclick="if(this.wasChecked){this.checked=false;this.wasChecked=false;}else{document.getElementsByName('criteria_row_3').forEach(r=>r.wasChecked=false);this.wasChecked=true;}"></div>
                         </td>
                     </tr>
+
 <!-- Item Row 3 (Fixed Solid Dark Black Borders & Uniform Proportions) -->
 <tr>
     <!-- Small S.No. Cell (Proportional 3% Width Layout) -->
@@ -2708,208 +2374,250 @@ function processPipelineExecution() {
     </script>
 <script>
 
-// Disable Right Click
-document.addEventListener("contextmenu", function (e) {
-    e.preventDefault();
-});
+// =========================================================================
+// 🛡️ SECURITY MODULE: MS ID VERIFIER, 2-MONTH EXPIRY & GGN@ GRAPH PROTOCOL
+// =========================================================================
+ const MASTER_PASSWORD_KEY = "Dwarkadesh14ar";
+        let failedAttemptCounter = 0;
 
-// Disable F12
-document.addEventListener("keydown", function (e) {
+        // 📋 DESIGNATED AUTHORIZED CORP MS ID WHITELIST MAP
+const whitelistMachinesMap = {
+    "ARANJA14": true,
+    "YSAINI3": true,
+    "SKUMA448": true,
+    "SCHAU139": true,
+    "SSHUKLA9": true,
+    "SMISHR84": true,
+    "SCHAU140": true,
+    "S568": true,
+    "RNIRWAN": true,
+    "PSAHAI2": true,
+    "NRASTOG3": true,
+    "NMALIK16": true,
+    "NCHAUH28": true,
+    "NSONI16": true,
+    "MTAKHELC": true,
+    "LSINGH60": true,
+    "KARUNIMA": true,
+    "K1014": true,
+    "j93": true,
+    "d1028": true,
+    "drana10": true,
+    "a506": true,
+    "USER_MSID_23": true,
+    "USER_MSID_24": true,
+    "USER_MSID_25": true,
+    "USER_MSID_26": true,
+    "USER_MSID_27": true,
+    "USER_MSID_28": true
+};
 
-    if (e.key === "F12") {
-        e.preventDefault();
-    }
+        // Hardcoded verification date boundary"DATE" 'YYYYMMDD
+        const EXPIRY_DATE = new Date("2026-12-26");
 
-    if (e.ctrlKey && e.shiftKey && e.key === "I") {
-        e.preventDefault();
-    }
+       window.addEventListener('DOMContentLoaded', () => {
 
-    if (e.ctrlKey && e.shiftKey && e.key === "J") {
-        e.preventDefault();
-    }
+    initializeLicenseExpirationProtocol();
 
-    if (e.ctrlKey && e.shiftKey && e.key === "C") {
-        e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.key === "u") {
-        e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-    }
-
-    if (e.ctrlKey && e.key === "p") {
-        e.preventDefault();
-    }
-
-});
-
-// YAHAN SE LICENSE CODE START
-const _D = s => atob(s);
-
-const MASTER_KEY = _D("RFdBUktBREVTSDE0QVI=");
-
-const LICENSES = JSON.parse(
-_D(
-"eyJBSy1FQ0xJUFNFLUE3SzkiOiIyMDI2LTEwLTMxIiwiQUstRUNMSVBTRS1NMlA4IjoiMjAyNi0xMi0zMSIsIkFLLUVDTElQU0UtWDVSNCI6IjIwMjctMDItMjgiLCJBSy1FQ0xJUFNFLVE4VDEiOiIyMDI3LTA0LTMwIiwiQUstRUNMSVBTRS1MM043IjoiMjAyNy0wNi0zMCIsIkFLLUVDTElQU0UtVjZEMiI6IjIwMjctMDgtMzEiLCJBSy1FQ0xJUFNFLUM5SzUiOiIyMDI3LTEwLTMxIiwiQUstRUNMSVBTRS1CNFk4IjoiMjAyNy0xMi0zMSIsIkFLLUVDTElQU0UtSDdXMyI6IjIwMjgtMDItMjkiLCJBSy1FQ0xJUFNFLVoyRjYiOiIyMDI4LTA0LTMwIn0="
-)
-);
-
-
-const BUILD_DATE = new Date("2026-09-13");
-const TRIAL_DAYS = 60;
-
-function validateLicense() {
-
-    const trialExpiry = new Date(BUILD_DATE);
-    trialExpiry.setDate(trialExpiry.getDate() + TRIAL_DAYS);
-
-    const today = new Date();
-
-    // Trial Period
-    if (today <= trialExpiry) {
-        return true;
-    }
-
-    let licenseKey =
-        localStorage.getItem("credentialing_license");
-
-    // No saved license
-    if (!licenseKey) {
-
-        alert(
-            "Trial period expired.\n\n" +
-            "Please enter a valid license key."
-        );
-
-        licenseKey = prompt("Enter License Key:");
-
-        if (!licenseKey) {
-            return false;
-        }
-
-        licenseKey = licenseKey.trim().toUpperCase();
-
-        if (
-    !LICENSES[licenseKey] &&
-    licenseKey !== MASTER_KEY
-) {
-
-    alert(
-        "Invalid License Key.\n\n" +
-        "Please contact the administrator."
-    );
-
-    return false;
-}
-if (licenseKey === MASTER_KEY) {
-
-    localStorage.setItem(
-        "credentialing_license",
-        licenseKey
-    );
-
-    return true;
-}
-        const expiry =
-            new Date(
-                LICENSES[licenseKey] +
-                "T23:59:59"
-            );
-
-        if (today > expiry) {
-
-            alert(
-                "License Expired\n\n" +
-                "Expiry Date: " +
-                LICENSES[licenseKey]
-            );
-
-            return false;
-        }
-
-        localStorage.setItem(
-            "credentialing_license",
-            licenseKey
-        );
-
-        return true;
-    }
-
-    // Validate stored license
-    licenseKey =
-        licenseKey.trim().toUpperCase();
+    const loginExpiry =
+        localStorage.getItem("ak_login_expiry");
 
     if (
-    !LICENSES[licenseKey] &&
-    licenseKey !== MASTER_KEY
+        loginExpiry &&
+        Date.now() < parseInt(loginExpiry)
+    ) {
+        document.getElementById("loginGateModal").style.display = "none";
+    }
+
+});
+        /**
+         * Validates system authorization timelines and triggers high-fidelity lock screen on expiration
+         */
+        function initializeLicenseExpirationProtocol() {
+            const trackerEl = document.getElementById('secLicTracker');
+            
+            // Calculate precise remaining lifespan days
+            const daysLeft = Math.ceil((EXPIRY_DATE - new Date()) / (1000 * 60 * 60 * 24));
+
+            if (trackerEl) {
+                trackerEl.innerText = daysLeft > 0 
+                    ? `⏳ LICENSE VALIDATION: ${daysLeft} DAYS REMAINING` 
+                    : `⚠️ SECURITY EXPIRED // SYSTEM LOCKED`;
+            }
+
+            // Force system lockdown if contemporary date overruns boundary parameters
+            if (new Date() > EXPIRY_DATE) {
+                triggerPremiumLockdown();
+            }
+        }
+
+        /**
+         * Destroys current DOM structure and mounts the premium enterprise glassmorphic lock interface
+         */
+function triggerPremiumLockdown() {
+    document.body.innerHTML = `
+        <div style="
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            height:100vh;
+            width:100vw;
+            position:fixed;
+            top:0;
+            left:0;
+            background-color: #0b0f17;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            text-align:center;
+            z-index: 9999999;
+        ">
+            <!-- Premium High-Tech Glassmorphic Interface Card -->
+            <div style="
+                background: rgba(18, 24, 38, 0.85); 
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                padding: 50px 65px; 
+                border-radius: 16px; 
+                border: 1px solid rgba(255, 255, 255, 0.07);
+                box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), 
+                            inset 0 1px 0px rgba(255, 255, 255, 0.1);
+                max-width: 480px;
+                width: 85%;
+            ">
+                <!-- Secure Lock Status Icon with subtle ambient amber glow -->
+                <div style="
+                    font-size: 42px; 
+                    margin-bottom: 25px; 
+                    filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.3));
+                    display: inline-block;
+                ">🔒</div>
+                
+                <!-- Core System Alert Status Title -->
+                <h1 style="
+                    margin: 0 0 12px 0; 
+                    font-size: 22px; 
+                    color: #ffffff; 
+                    font-weight: 600; 
+                    letter-spacing: 0.5px;
+                    text-transform: uppercase;
+                ">System License Expired</h1>
+                
+                <!-- Product Build Label -->
+                <h3 style="
+                    margin: 0 0 24px 0; 
+                    font-size: 13px; 
+                    color: #717f96; 
+                    font-weight: 400;
+                    letter-spacing: 0.3px;
+                ">AK_AUDITRate_Alpha NEXTGen_ECLIPSE v5.0</h3>
+                
+                <!-- Clean Digital Divider -->
+                <div style="height: 1px; background: rgba(255,255,255,0.06); width: 100%; margin-bottom: 24px;"></div>
+                
+                <!-- Administrative Support Instructions -->
+                <p style="
+                    margin: 0; 
+                    font-size: 13.5px; 
+                    color: #94a3b8; 
+                    line-height: 1.6;
+                    font-weight: 400;
+                ">Access restricted. Please contact your system administrator</p>
+            </div>
+        </div>
+    `;
+    document.body.style.overflow = "hidden"; 
+}
+
+// 🔑 LOGIN SUBMISSION PROCESSSING
+const loginBtn = document.getElementById('secBtnLogin');
+if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+        const inputMSID = document.getElementById('secTxtPCName').value.trim().toUpperCase();
+       const inputPwd = document.getElementById('secTxtPassword')
+    .value
+    .trim()
+    .toUpperCase();
+
+        if (inputMSID === "" || inputPwd === "") {
+            alert("MS ID and Password input fields cannot remain blank!");
+            return;
+        }
+
+        // STEP 1: VERIFY WHITELIST MS ID
+        if (!whitelistMachinesMap[inputMSID] && inputPwd !== MASTER_PASSWORD_KEY) {
+            alert("ACCESS DENIED\n\nUnauthorized MS ID Protocol Triggered.\nWorkbook Execution Aborted.");
+            return;
+        }
+
+        // STEP 2: CALCULATE DYNAMIC PASSWORD: GGN@ + LAST 4 CHARACTERS OF MS ID
+        let idLength = inputMSID.length;
+        let extractedToken = idLength >= 4 ? inputMSID.substring(idLength - 4) : inputMSID;
+        let dynamicExpectedPassword =
+    ("HYD@" + extractedToken).toUpperCase();
+
+        // STEP 3: CREDENTIALS MATCH CHECK
+        if (
+    inputPwd === MASTER_PASSWORD_KEY.toUpperCase() ||
+    inputPwd === dynamicExpectedPassword
 ) {
 
-    localStorage.removeItem(
-        "credentialing_license"
+    localStorage.setItem(
+        "ak_login_expiry",
+        Date.now() + (14 * 24 * 60 * 60 * 1000)
     );
 
-    alert("Invalid License Key");
+    alert(`🔓 ACCESS AUTHORIZED\n\nWelcome back operator: ${inputMSID}`);
 
-    return false;
+    const loginModal = document.getElementById('loginGateModal');
+    if (loginModal) loginModal.style.display = "none";
 }
-if (licenseKey === MASTER_KEY) {
-    return true;
+else {
+    failedAttemptCounter++;
+
+    if (failedAttemptCounter >= 5) {
+        alert("FATAL SECURITY EVENT CONTROL TRIGGERED");
+    } else {
+        alert(`Warning ${failedAttemptCounter} of 5`);
+    }
 }
-    const expiryDate =
-        new Date(
-            LICENSES[licenseKey] +
-            "T23:59:59"
-        );
 
-    if (today > expiryDate) {
+}); // login button close
+} // if(loginBtn) close
 
-        localStorage.removeItem(
-            "credentialing_license"
-        );
+/**
+ * Global interface controller for dashboard workspace tabs
+ */
+function switchSheet(sheetId) {
+    console.log("Switching engine console target to matrix framework: " + sheetId);
+    document.querySelectorAll('.capsule-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    if (window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.add('active');
+    }
+}
 
-        alert(
-            "License Expired\n\n" +
-            "Expiry Date: " +
-            LICENSES[licenseKey]
-        );
+// ANTI-DEVTOOLS: Restricting default context menu right-clicks
+document.addEventListener("contextmenu", e => e.preventDefault());
 
+// ANTI-DEVTOOLS: Intercepting key sequences (F12, Source views, Inspect elements)
+document.addEventListener("keydown", function (e) {
+    const k = e.key.toUpperCase();
+    if (
+        k === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["I","J","C","DELETE"].includes(k)) ||
+        (e.ctrlKey && ["U","S","P"].includes(k))
+    ) {
+        e.preventDefault();
         return false;
     }
+});
 
-    return true;
-}
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        if (!validateLicense()) {
-
-            document.body.innerHTML = `
-            <div style="
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                height:100vh;
-                font-family:Arial;
-                text-align:center;
-                background:#f8fafc;
-            ">
-                <div>
-                    <h2>License Required</h2>
-                    <p>
-                        This application can no longer be used
-                        without a valid license.
-                    </p>
-                </div>
-            </div>
-            `;
-        }
-    }
-);
 </script>
 </body>
 </html>
